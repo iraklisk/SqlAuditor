@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SqlAuditor")]
-[assembly: AssemblyDescription("SqlAuditor is a library to audit Sql Server")]
+[assembly: AssemblyTitle("SqlAuditor.Service")]
+[assembly: AssemblyDescription("SqlAuditor Service is a simple service to run SqlAuditor")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Iraklis Karagkiozoglou")]
-[assembly: AssemblyProduct("SqlAuditor")]
+[assembly: AssemblyProduct("SqlAuditor.Service")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a69933c7-255d-409d-9ba4-6d3191d73874")]
+[assembly: Guid("f5e5c497-eb29-482a-8608-5bf8b5156b7b")]
 
 // Version information for an assembly consists of the following four values:
 //

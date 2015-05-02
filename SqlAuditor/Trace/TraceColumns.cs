@@ -72,5 +72,6 @@ namespace SqlAuditor.Trace
         public const int SqlHandle = 63;
         public const int SessionLoginName = 64;
         public const int PlanHandle = 65;
+        public const int GroupID = 66;
     }
 }

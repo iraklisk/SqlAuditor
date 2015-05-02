@@ -10,10 +10,10 @@ namespace SqlAuditor.Config
     [Serializable]
     public class EventFilter
     {
-        public int Column { get; private set; }
-        public object Value { get; private set; }
-        public int Operator { get; private set; }
-
+        public int Column { get; set; }
+        public object Value { get; set; }
+        public int Operator { get; set; }
+        internal EventFilter() { }
         public EventFilter(int column, object value, int op)
         {
             this.Column = column;

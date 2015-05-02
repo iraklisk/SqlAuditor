@@ -10,13 +10,15 @@ namespace SqlAuditor.Config
     [Serializable]
     public class InstanceConfig
     {
-        public string DataSource { get; private set; }
-        public string Username { get; private set; }
+        public string DataSource { get; set; }
+        public string Username { get; set; }
 
-        public string Password { get; private set; }
+        public string Password { get; set; }
 
-        public string LogDB { get; private set; }
-        public bool IntegratedSecurity { get; private set; }
+        public string LogDB { get; set; }
+        public bool IntegratedSecurity { get; set; }
+
+        internal InstanceConfig() { }
         public InstanceConfig(string dataSource, string username, string password, string logDB)
         {
             this.DataSource = dataSource;

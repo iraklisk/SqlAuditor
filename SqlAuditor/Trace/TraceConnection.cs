@@ -12,38 +12,29 @@ namespace SqlAuditor.Trace
     public class TraceConnection : IDisposable
     {
         private SqlConnection connection;
-        private DataSet ds;
         private int traceid;
         private SqlDataReader dreader;
         private bool hasResults;
-        private Dictionary<string, Action<TraceEvent, int>> DecodeFunctions;
-        private string[] ColumnDataTypes;
+        private Dictionary<SqlDbType, Action<TraceEvent, int>> DecodeFunctions;
         private InstanceConfig instance;
-        public TraceConnection(InstanceConfig instance)
+        private TraceContext context;
+        public TraceConnection(TraceContext context)
         {
-            this.instance = instance;
+            this.context = context;
+            this.instance = context.Trace.Instance;
             connection = new SqlConnection(instance.ConnectionString);
-            ds = new DataSet();
             traceid = -1;
             Open();
-            PopulateDataSet();
-            InitTypesAndFunction();
-
-
+            DecodeFunctions = new Dictionary<SqlDbType, Action<TraceEvent, int>>();
+            DecodeFunctions.Add(SqlDbType.Int, SetIntColumn);
+            DecodeFunctions.Add(SqlDbType.BigInt, SetLongColumn);
+            DecodeFunctions.Add(SqlDbType.DateTime, SetDateTimeColumn);
+            DecodeFunctions.Add(SqlDbType.NVarChar, SetStringColumn);
+            DecodeFunctions.Add(SqlDbType.Image, SetByteColumn);
+            DecodeFunctions.Add(SqlDbType.Text, SetStringColumn);
+            DecodeFunctions.Add(SqlDbType.UniqueIdentifier, SetGuidColumn);
         }
-        private void InitTypesAndFunction()
-        {
-            ColumnDataTypes = new string[ds.Tables["TraceColumns"].Rows.Count + 1];
-            foreach (DataRow dr in ds.Tables["TraceColumns"].Rows) ColumnDataTypes[Convert.ToInt32(dr["trace_column_id"])] = dr["type_name"].ToString();
-            DecodeFunctions = new Dictionary<string, Action<TraceEvent, int>>();
-            DecodeFunctions.Add("int", SetIntColumn);
-            DecodeFunctions.Add("bigint", SetLongColumn);
-            DecodeFunctions.Add("datetime", SetDateTimeColumn);
-            DecodeFunctions.Add("nvarchar", SetStringColumn);
-            DecodeFunctions.Add("image", SetByteColumn);
-            DecodeFunctions.Add("text", SetStringColumn);
-            DecodeFunctions.Add("uniqueidentifier", SetGuidColumn);
-        }
+
         private void Open()
         {
             connection.Open();
@@ -57,30 +48,6 @@ namespace SqlAuditor.Trace
             }
         }
 
-        private void PopulateDataSet()
-        {
-            using (SqlCommand cmd = new SqlCommand("select * from sys.trace_events", connection))
-            {
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                {
-                    da.Fill(ds, "TraceEvents");
-                }
-            }
-            using (SqlCommand cmd = new SqlCommand("select * from sys.trace_columns", connection))
-            {
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                {
-                    da.Fill(ds, "TraceColumns");
-                }
-            }
-            using (SqlCommand cmd = new SqlCommand("select * from sys.trace_event_bindings", connection))
-            {
-                using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                {
-                    da.Fill(ds, "TraceEventBindings");
-                }
-            }
-        }
         public void CreateTrace()
         {
             // Execute sp_trace_create
@@ -104,11 +71,14 @@ namespace SqlAuditor.Trace
         {
             // Execute sp_trace_setstatus
             // https://msdn.microsoft.com/en-us/library/ms176034.aspx
-            SqlCommand cmd = new SqlCommand("sp_trace_setstatus", connection);
+            var conn = new SqlConnection(instance.ConnectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("sp_trace_setstatus", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
             cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = traceid;
             cmd.Parameters.Add("@status", SqlDbType.Int).Value = status;
             cmd.ExecuteNonQuery();
+            conn.Close();
         }
 
         public void CloseTrace()
@@ -134,6 +104,7 @@ namespace SqlAuditor.Trace
 
         private bool ReadTrace()
         {
+
             hasResults = dreader.Read();
             return hasResults;
         }
@@ -234,13 +205,13 @@ namespace SqlAuditor.Trace
             //we got new event
             if (eventClass >= 0 && eventClass < 255)
             {
-                TraceEvent evt = new TraceEvent(ColumnDataTypes,instance);
+                TraceEvent evt = new TraceEvent(context);
                 evt[27] = eventClass;
                 while (ReadTrace())
                 {
                     columnid = (int)dreader[0];
                     if (columnid > 64) return evt;
-                    DecodeFunctions[ColumnDataTypes[columnid]](evt, columnid);
+                    DecodeFunctions[context.SqlTraceColumns[columnid].DbType](evt, columnid);
                 }
             }
             ReadTrace();
@@ -257,70 +228,51 @@ namespace SqlAuditor.Trace
             cmd.Parameters.Add("@eventid", SqlDbType.Int).Value = eventId;
             SqlParameter p = cmd.Parameters.Add("@columnid", SqlDbType.Int);
             cmd.Parameters.Add("@on", SqlDbType.Bit).Value = 1;
-            if (columns.Length == 0)
+            foreach (int i in columns)
             {
-                foreach (var dr in ds.Tables["TraceEventBindings"].Select("trace_event_id=" + eventId.ToString()))
-                {
-                    p.Value = Convert.ToInt32(dr["trace_column_id"]);
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            else
-            {
-                foreach (int i in columns)
-                {
-                    p.Value = i;
-                    cmd.ExecuteNonQuery();
-                }
+                p.Value = i;
+                cmd.ExecuteNonQuery();
             }
         }
         public void SetFilter(int columnID, int logicalOperator, int comparisonOperator, object value)
         {
             // Execute sp_trace_setfilter
             // https://msdn.microsoft.com/en-us/library/ms174404.aspx
-            var rows = ds.Tables["TraceColumns"].Select("trace_column_id = " + columnID.ToString());
-            if (rows.Any())
+            SqlCommand cmd = new SqlCommand("sp_trace_setfilter", connection);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = traceid;
+            cmd.Parameters.Add("@columnid", SqlDbType.Int).Value = columnID;
+            cmd.Parameters.Add("@logical_operator", SqlDbType.Int).Value = logicalOperator;
+            cmd.Parameters.Add("@comparison_operator", SqlDbType.Int).Value = comparisonOperator;
+            switch (context.SqlTraceColumns[columnID].DbType)
             {
-                var row = rows.First();
-                SqlCommand cmd = new SqlCommand("sp_trace_setfilter", connection);
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.Add("@traceid", SqlDbType.Int).Value = traceid;
-                cmd.Parameters.Add("@columnid", SqlDbType.Int).Value = columnID;
-                cmd.Parameters.Add("@logical_operator", SqlDbType.Int).Value = logicalOperator;
-                cmd.Parameters.Add("@comparison_operator", SqlDbType.Int).Value = comparisonOperator;
-                switch (row["type_name"].ToString())
-                {
-                    case "int":
-                        cmd.Parameters.Add("@value", SqlDbType.Int).Value = (value == null ? DBNull.Value : value);
-                        break;
-                    case "bigint":
-                        cmd.Parameters.Add("@value", SqlDbType.BigInt).Value = (value == null ? DBNull.Value : value);
-                        break;
-                    case "datetime":
-                        cmd.Parameters.Add("@value", SqlDbType.DateTime).Value = (value == null ? DBNull.Value : value);
-                        break;
-                    case "image":
-                        cmd.Parameters.Add("@value", SqlDbType.Image).Value = (value == null ? DBNull.Value : value);
-                        break;
-                    case "nvarchar":
-                        cmd.Parameters.Add("@value", SqlDbType.NVarChar).Value = (String.IsNullOrEmpty(value.ToString()) ? DBNull.Value : value);
-                        break;
-                    case "text":
-                        cmd.Parameters.Add("@value", SqlDbType.Text).Value = (String.IsNullOrEmpty(value.ToString()) ? DBNull.Value : value);
-                        break;
-                    case "uniqueidentifier":
-                        cmd.Parameters.Add("@value", SqlDbType.UniqueIdentifier).Value = (value == null || (Guid)value == Guid.Empty ? DBNull.Value : value);
-                        break;
-                }
-                cmd.ExecuteNonQuery();
+                case SqlDbType.Int:
+                case SqlDbType.BigInt:
+                case SqlDbType.DateTime:
+                case SqlDbType.Image:
+                case SqlDbType.Binary:
+                    cmd.Parameters.Add("@value", context.SqlTraceColumns[columnID].DbType).Value = (value == null ? DBNull.Value : value);
+                    break;
+                case SqlDbType.NVarChar:
+                case SqlDbType.Text:
+                    cmd.Parameters.Add("@value", context.SqlTraceColumns[columnID].DbType).Value = (String.IsNullOrEmpty(value.ToString()) ? DBNull.Value : value);
+                    break;
+                case SqlDbType.UniqueIdentifier:
+                    cmd.Parameters.Add("@value", SqlDbType.UniqueIdentifier).Value = (value == null || (Guid)value == Guid.Empty ? DBNull.Value : value);
+                    break;
             }
+            cmd.ExecuteNonQuery();
+
         }
 
 
         public void Dispose()
         {
-            CloseTrace();
-            Close();
+            if (connection != null && connection.State != ConnectionState.Closed)
+            {
+                CloseTrace();
+                Close();
+            }
         }
     }
 }

@@ -4,59 +4,40 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SqlAuditor.ConsoleServer
 {
+
     class Program
     {
+        static SqlAuditor auditor;
+        [STAThread]
         static void Main(string[] args)
         {
-            var config = new AuditConfig();
-            TraceConfig trace = new TraceConfig(new InstanceConfig("IK", "demo"));
-            trace.Events.Add(new EventConfig(TraceEvents.TSQL.SQLStmtCompleted,
-                                   TraceColumns.TextData, TraceColumns.LoginName,
-                                   TraceColumns.CPU, TraceColumns.Reads,
-                                   TraceColumns.Writes, TraceColumns.Duration,
-                                   TraceColumns.SPID
-                                   , TraceColumns.StartTime, TraceColumns.EndTime
-                                   , TraceColumns.DatabaseName
-                                   , TraceColumns.LoginName
-                                   , TraceColumns.ApplicationName, TraceColumns.RequestID, TraceColumns.GUID));
-            trace.Events.Add(new EventConfig(TraceEvents.TSQL.PrepareSQL,
-                                  TraceColumns.TextData, TraceColumns.LoginName,
-                                  TraceColumns.CPU, TraceColumns.Reads,
-                                  TraceColumns.Writes, TraceColumns.Duration,
-                                  TraceColumns.SPID
-                                  , TraceColumns.StartTime, TraceColumns.EndTime
-                                  , TraceColumns.DatabaseName
-                                  , TraceColumns.LoginName
-                                  , TraceColumns.ApplicationName, TraceColumns.RequestID, TraceColumns.GUID));
-            trace.Events.Add(new EventConfig(TraceEvents.TSQL.SQLBatchCompleted,
-                                       TraceColumns.TextData,
-                                       TraceColumns.LoginName,
-                                       TraceColumns.CPU,
-                                       TraceColumns.Reads,
-                                       TraceColumns.Writes,
-                                       TraceColumns.Duration,
-                                       TraceColumns.SPID,
-                                       TraceColumns.StartTime,
-                                       TraceColumns.EndTime,
-                                       TraceColumns.DatabaseName,
-                                       TraceColumns.ApplicationName, TraceColumns.RequestID, TraceColumns.GUID));
-            trace.Events.Add(new EventConfig(TraceEvents.StoredProcedures.RPCCompleted,
-                                   TraceColumns.TextData, TraceColumns.LoginName,
-                                   TraceColumns.CPU, TraceColumns.Reads,
-                                   TraceColumns.Writes, TraceColumns.Duration,
-                                   TraceColumns.SPID
-                                   , TraceColumns.StartTime, TraceColumns.EndTime
-                                   , TraceColumns.DatabaseName
-                                   , TraceColumns.ObjectName
-                                   , TraceColumns.ApplicationName, TraceColumns.RequestID, TraceColumns.GUID));
-            config.Traces.Add(trace);
-            var instAudit = new SqlInstanceAuditor(config.Traces.First());
-            instAudit.Start();
-            Console.ReadKey();
+            System.Console.CancelKeyPress += Console_CancelKeyPress;
+            Console.WriteLine("SqlAuditor: Reading Config...");
+            var config = AuditConfig.Load("Config.xml");
+            auditor = new SqlAuditor(config);
+            Console.WriteLine("SqlAuditor: Registering Observers...");
+            auditor.RegisterObserver(typeof(ConsoleTrace));
+            auditor.RegisterObserver(typeof(DBLogger));
+            auditor.Start();
+            Console.WriteLine("SqlAuditor: Started.");
+            Console.WriteLine("Press CTR+C to exit.");
+            while (true)
+            {
+                Thread.Sleep(new TimeSpan(0, 0, 5));
+            }
         }
+
+        static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
+        {
+            Console.WriteLine("SqlAuditor: Stopping...");
+            auditor.Stop();
+
+        }
+
     }
 }

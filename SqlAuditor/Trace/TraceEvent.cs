@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -10,33 +12,32 @@ namespace SqlAuditor.Trace
     public class TraceEvent
     {
 
-        private BitArray IsSetArray = new BitArray(66);
-        private object[] Values = new object[66];
-        private string[] ColumnDataTypes;
-
-       
-        internal TraceEvent(string[] ColumnDataTypes, InstanceConfig instance)
+        public Dictionary<int, object> Values { get; set; }
+        private TraceContext context;
+        internal TraceEvent(TraceContext context)
         {
-            this.ColumnDataTypes = ColumnDataTypes;
-            this.Instance = instance;
+            this.context = context;
+            this.Instance = context.Trace.Instance;
+            Values = new Dictionary<int, object>();
         }
-        public InstanceConfig Instance { get; private set; }
+        public InstanceConfig Instance { get; set; }
         public string GetFormattedData(int idx, string format)
         {
-            switch (ColumnDataTypes[idx])
+            switch (context.SqlTraceColumns[idx].DbType)
             {
-                case "bigint":
+                case SqlDbType.BigInt:
                     return GetLong(idx).ToString(format);
-                case "datetime":
+                case SqlDbType.DateTime:
                     DateTime d = GetDateTime(idx);
                     return 1 == d.Year ? "" : d.ToString(format);
-                case "binary":
+                case SqlDbType.Binary:
+                case SqlDbType.Image:
                     return GetByte(idx).ToString();
-                case "int":
+                case SqlDbType.Int:
                     return GetInt(idx).ToString(format);
-                case "string":
+                case SqlDbType.NVarChar:
                     return GetString(idx);
-                case "uniqueidentifier":
+                case  SqlDbType.UniqueIdentifier:
                     return GetGuid(idx).ToString();
             }
             return null;
@@ -44,47 +45,48 @@ namespace SqlAuditor.Trace
 
         private int GetInt(int idx)
         {
-            if (!IsSetArray[idx]) return 0;
+            if (!Values.ContainsKey(idx)) return 0;
             return Values[idx] == null ? 0 : (int)Values[idx];
         }
 
         private long GetLong(int idx)
         {
-            if (!IsSetArray[idx]) return 0;
+            if (!Values.ContainsKey(idx)) return 0;
             return Values[idx] == null ? 0 : (long)Values[idx];
         }
 
         private string GetString(int idx)
         {
-            if (!IsSetArray[idx]) return "";
+            if (!Values.ContainsKey(idx)) return "";
             return Values[idx] == null ? "" : (string)Values[idx];
         }
 
         private byte[] GetByte(int idx)
         {
-            return IsSetArray[idx] ? (byte[])Values[idx] : new byte[1];
+            return Values.ContainsKey(idx) ? (byte[])Values[idx] : new byte[1];
         }
 
         private DateTime GetDateTime(int idx)
         {
-            return IsSetArray[idx] ? (DateTime)Values[idx] : new DateTime(0);
+            return Values.ContainsKey(idx) ? (DateTime)Values[idx] : new DateTime(0);
         }
 
         private Guid GetGuid(int idx)
         {
-            return IsSetArray[idx] ? (Guid)Values[idx] : Guid.Empty;
+            return Values.ContainsKey(idx) ? (Guid)Values[idx] : Guid.Empty;
         }
 
         public object this[int column]
         {
             get
             {
-                return Values[column];
+                if (Values.ContainsKey(column))
+                    return Values[column];
+                else return null;
             }
             set
             {
-                Values[column] = value;
-                IsSetArray[column] = true;
+                Values.Add(column, value);
             }
         }
         public string TextData { get { return GetString(TraceColumns.TextData); } }
@@ -152,5 +154,7 @@ namespace SqlAuditor.Trace
         public byte[] SqlHandle { get { return GetByte(TraceColumns.SqlHandle); } }
         public string SessionLoginName { get { return GetString(TraceColumns.SessionLoginName); } }
         public byte[] PlanHandle { get { return GetByte(TraceColumns.PlanHandle); } }
+
+        public int GroupID { get { return GetInt(TraceColumns.GroupID); } }
     }
 }

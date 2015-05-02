@@ -19,17 +19,23 @@ namespace SqlAuditor
         //private SqlConnection conn;
         private TraceConnection traceConn;
         private Task tsk;
+        private CancellationTokenSource ts;
         private Timer timer;
         private bool isRunning = true;
         private ConcurrentQueue<TraceEvent> queue;
-        public SqlInstanceAuditor(TraceConfig trace)
+        private List<ITraceObserver> observers;
+        private TraceContext context;
+        public SqlInstanceAuditor(TraceContext context)
         {
+            this.trace = context.Trace;
             this.instance = trace.Instance;
-            this.trace = trace;
+            this.context = context;
             //this.conn = new SqlConnection(instance.ConnectionString);
-
-            tsk = new Task(InternalStart, TaskCreationOptions.LongRunning);
+            ts = new CancellationTokenSource();
+            tsk = new Task(InternalStart, ts.Token,TaskCreationOptions.LongRunning);
+      
             queue = new ConcurrentQueue<TraceEvent>();
+            this.observers = context.TraceObservers;
         }
 
 
@@ -42,7 +48,6 @@ namespace SqlAuditor
                     TraceEvent evt = traceConn.Next();
                     if (evt != null)
                     {
-                        //Console.WriteLine(evt.DatabaseName + " " + evt.TextData);
                         queue.Enqueue(evt);
                     }
                 }
@@ -56,34 +61,20 @@ namespace SqlAuditor
             }
         }
 
-        private void Log(object state)
+        private void ConsumeEvents(object state)
         {
             timer.Change(Timeout.Infinite, Timeout.Infinite);
             TraceEvent pf;
             while (queue.TryDequeue(out pf))
             {
-                Console.WriteLine("***********************************************");
-                Console.WriteLine("RequestID:\t{0}", pf.RequestID);
-                Console.WriteLine("EventClass:\t{0}", pf.EventClass);
-                Console.WriteLine("EventSequence:\t{0}", pf.EventSequence);
-                Console.WriteLine("EventSubClass:\t{0}", pf.EventSubClass);
-                Console.WriteLine("***********************************************");
-                Console.WriteLine("Application:\t{0}", pf.ApplicationName);
-                Console.WriteLine("DatabaseName:\t{0}", pf.DatabaseName);
-                Console.WriteLine("LoginName:\t{0}", pf.LoginName);
-                Console.WriteLine("StartTime:\t{0}", pf.StartTime);
-                Console.WriteLine("EndTime:\t{0}", pf.EndTime);
-                Console.WriteLine("Duration:\t{0}", pf.Duration);
-                Console.WriteLine(pf.TextData);
-                Console.WriteLine("***********************************************");
-                Console.WriteLine();
+                observers.ForEach((observer) => observer.EventReceived(pf));
             }
-            timer.Change(new TimeSpan(0, 0, 10), new TimeSpan(0, 0, 10));
+            timer.Change(new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 5));
         }
 
         public void Start()
         {
-            traceConn = new TraceConnection(instance);
+            traceConn = new TraceConnection(context);
             traceConn.CreateTrace();
             foreach (var pe in trace.Events)
             {
@@ -99,20 +90,23 @@ namespace SqlAuditor
             traceConn.SetFilter(10, (int)LogicalOperators.AND, (int)ComparisonOperators.NotLike, "SqlAuditor");
             traceConn.StartTrace();
             tsk.Start();
-            timer = new Timer(new TimerCallback(Log), new object(), new TimeSpan(0, 0, 10), new TimeSpan(0, 0, 10));
+            timer = new Timer(new TimerCallback(ConsumeEvents), new object(), new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 5));
         }
 
         public void Stop()
         {
             isRunning = false;
             traceConn.StopTrace();
+            ts.Cancel();
+            ts.Token.WaitHandle.WaitOne();
+            tsk.Wait();
             tsk.Dispose();
-            //;if (conn.State != System.Data.ConnectionState.Closed) conn.Close();
+            ts.Dispose();
         }
 
         public void Dispose()
         {
-            Stop();
+           if(isRunning) Stop();
         }
     }
 }

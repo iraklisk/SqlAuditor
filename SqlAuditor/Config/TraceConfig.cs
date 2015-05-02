@@ -9,10 +9,15 @@ namespace SqlAuditor.Config
     [Serializable]
     public class TraceConfig
     {
-        public InstanceConfig Instance { get; private set; }
-        public List<EventConfig> Events { get; private set; }
+        public InstanceConfig Instance { get; set; }
+        public List<EventConfig> Events { get; set; }
 
-        public List<EventFilter> Filters { get; private set; }
+        public List<EventFilter> Filters { get; set; }
+
+        internal TraceConfig()
+        {
+
+        }
         public TraceConfig(InstanceConfig instance)
         {
             this.Instance = instance;

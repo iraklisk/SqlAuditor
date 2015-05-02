@@ -9,10 +9,11 @@ namespace SqlAuditor.Config
     [Serializable]
     public class EventConfig
     {
-        public int Event { get; private set; }
+        public int Event { get; set; }
 
-        public int[] Columns { get; private set; }
+        public int[] Columns { get; set; }
 
+        internal EventConfig() { }
         public EventConfig(int profilerEvent, params int[] columns )
         {
             this.Event = profilerEvent;

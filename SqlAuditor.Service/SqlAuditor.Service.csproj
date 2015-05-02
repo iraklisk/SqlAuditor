@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D5AC6FB8-D5EA-4C2B-8DA6-1DE484815C83}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{33E4BE21-0CD9-42B9-A659-CAB410118808}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SqlAuditor</RootNamespace>
-    <AssemblyName>SqlAuditor</AssemblyName>
+    <RootNamespace>SqlAuditor.Service</RootNamespace>
+    <AssemblyName>SqlAuditor.Service</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -37,41 +39,27 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config\AuditConfig.cs" />
-    <Compile Include="Config\EventConfig.cs" />
-    <Compile Include="Config\EventFilter.cs" />
-    <Compile Include="Config\InstanceConfig.cs" />
-    <Compile Include="DBLogger.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+    <Compile Include="SqlAuditorSrv.cs">
+      <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Trace\ComparisonOperators.cs" />
+    <Compile Include="SqlAuditorSrv.Designer.cs">
+      <DependentUpon>SqlAuditorSrv.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlAuditor.cs" />
-    <Compile Include="SqlInstanceAuditor.cs" />
-    <Compile Include="Config\TraceConfig.cs" />
-    <Compile Include="ConsoleTrace.cs" />
-    <Compile Include="ITraceObserver.cs" />
-    <Compile Include="Trace\LogicalOperators.cs" />
-    <Compile Include="Trace\SqlTraceCategory.cs" />
-    <Compile Include="Trace\SqlTraceColumn.cs" />
-    <Compile Include="Trace\SqlTraceEvent.cs" />
-    <Compile Include="Trace\TraceColumns.cs" />
-    <Compile Include="Trace\TraceConnection.cs" />
-    <Compile Include="Trace\TraceContext.cs" />
-    <Compile Include="Trace\TraceEvent.cs" />
-    <Compile Include="Trace\TraceEvents.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SqlAuditor\SqlAuditor.csproj">
+      <Project>{d5ac6fb8-d5ea-4c2b-8da6-1de484815c83}</Project>
+      <Name>SqlAuditor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

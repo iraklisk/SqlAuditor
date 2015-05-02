@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SqlAuditor.ConsoleServer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Simple application to run SqlAuditor from command line")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Iraklis Karagkiozoglou")]
 [assembly: AssemblyProduct("SqlAuditor.ConsoleServer")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
