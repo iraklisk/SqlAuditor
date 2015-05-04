@@ -25,6 +25,7 @@ namespace SqlAuditor.Win
             this.Trace = trace;
             InitDataBindings();
             this.lblTitle.Text = "SqlAuditor - " + trace.Instance.DataSource;
+            mtcSettings.SelectedTab = mtpInstanceConfig;
         }
 
         private void InitDataBindings()
@@ -63,6 +64,7 @@ namespace SqlAuditor.Win
                 {
                     conn.Open();
                     conn.Close();
+                    PopulateData();
                     return new Tuple<bool, Exception>(true, null);
                 }
                 catch (Exception ex)
@@ -94,7 +96,6 @@ namespace SqlAuditor.Win
             grdColumns.ResumeDrawing();
             grdFilters.SuspendDrawing();
             grdFilters.Rows.Clear();
-            Trace.Filters.Add(new EventFilter(10, 0, 0, 10));
             foreach (var flt in Trace.Filters)
             {
                 grdFilters.Rows.Add(context.SqlTraceColumns[flt.Column].Name,
@@ -112,7 +113,6 @@ namespace SqlAuditor.Win
             if (res.Item1)
             {
                 MetroFramework.MetroMessageBox.Show(this, "Checking connection was successfull.", "SqlAuditor", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                PopulateData();
             }
             else
             {
@@ -191,18 +191,26 @@ namespace SqlAuditor.Win
                 if (!row.IsNewRow)
                 {
                     Trace.Filters.Add(new EventFilter(
-                        (int)colFilterCol.GetIndex(row.Cells["colFilterCol"].Value.ToString()),
+                        context.SqlTraceColumns.Where((c) => c.Value.Name == row.Cells["colFilterCol"].Value.ToString()).First().Key,
                         (int)colComparisonOperator.GetIndex(row.Cells["colComparisonOperator"].Value.ToString()),
                         (int)colLogicalOperator.GetIndex(row.Cells["colLogicalOperator"].Value.ToString()),
                         row.Cells["colValue"].Value
                         ));
                 }
             }
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.Close();
+        }
 
-            var ac = new AuditConfig();
-            ac.Encryption = EncryptionOptions.None;
-            ac.Traces.Add(Trace);
-            ac.Save("Config.xml");
+        private void frmSettings_Load(object sender, EventArgs e)
+        {
+            if (!isnew) CheckConnection();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Close();
         }
 
 
