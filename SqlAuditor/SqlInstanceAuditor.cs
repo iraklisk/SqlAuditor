@@ -82,12 +82,9 @@ namespace SqlAuditor
             }
             foreach (var ef in trace.Filters.OrderBy((ef)=>ef.Column))
             {
-                if (ef.Value.GetType() == typeof(int))
-                    traceConn.SetFilter(ef.Column, (int)LogicalOperators.AND, (int)ef.Operator, (long)ef.Value);
-                else
-                    traceConn.SetFilter(ef.Column, (int)LogicalOperators.AND, (int)ef.Operator, (string)ef.Value);
+                    traceConn.SetFilter(ef.Column, LogicalOperators.AND, ef.Operator, ef.Value);
             }
-            traceConn.SetFilter(10, (int)LogicalOperators.AND, (int)ComparisonOperators.NotLike, "SqlAuditor");
+            traceConn.SetFilter(10, LogicalOperators.AND, ComparisonOperators.NotLike, "SqlAuditor");
             traceConn.StartTrace();
             tsk.Start();
             timer = new Timer(new TimerCallback(ConsumeEvents), new object(), new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 5));
