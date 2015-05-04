@@ -50,6 +50,8 @@
     <Compile Include="Config\InstanceConfig.cs" />
     <Compile Include="DBLogger.cs" />
     <Compile Include="EmailProvider.cs" />
+    <Compile Include="GenericTraceObserverFactory.cs" />
+    <Compile Include="ITraceObserverFactory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

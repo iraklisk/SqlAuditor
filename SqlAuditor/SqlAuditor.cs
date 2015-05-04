@@ -12,18 +12,18 @@ namespace SqlAuditor
     public class SqlAuditor
     {
         private AuditConfig config;
-        private List<Type> observers;
+        private List<ITraceObserverFactory> observerFactories;
         private List<SqlInstanceAuditor> auditors;
         public SqlAuditor(AuditConfig config)
         {
             this.config = config;
-            observers = new List<Type>();
+            observerFactories = new List<ITraceObserverFactory>();
             auditors = new List<SqlInstanceAuditor>();
         }
 
-        public void RegisterObserver(Type observer)
+        public void RegisterObserver(ITraceObserverFactory observerFactory)
         {
-            observers.Add(observer);
+            observerFactories.Add(observerFactory);
         }
         public void Start()
         {
@@ -31,11 +31,11 @@ namespace SqlAuditor
             {
                 var instObservers = new List<ITraceObserver>();
                 var context = new TraceContext(trace, instObservers);
-                foreach (var t in observers)
+                foreach (var observerFactory in observerFactories)
                 {
-                    var obs = Activator.CreateInstance(t) as ITraceObserver;
-                    obs.Init(context);
-                    instObservers.Add(obs);
+                    var observer = observerFactory.Create(context);
+                    observer.Init(context);
+                    instObservers.Add(observer);
                 }
                 SqlInstanceAuditor auditor = new SqlInstanceAuditor(context);
                 auditors.Add(auditor);

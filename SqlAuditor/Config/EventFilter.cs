@@ -15,7 +15,7 @@ namespace SqlAuditor.Config
         public int ComparisonOperator { get; set; }
         public int LogicalOperator { get; set; }
         internal EventFilter() { }
-        public EventFilter(int column, int comparisonOperator, int logicalOperator, object value)
+        public EventFilter(int column, int logicalOperator, int comparisonOperator, object value)
         {
             this.Column = column;
             this.Value = value;

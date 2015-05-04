@@ -9,7 +9,21 @@ namespace SqlAuditor.Config
 {
     public class EncryptionUtils
     {
-        private static string EncryptionKey = "fsaqbVvWn5XQYItmeEdKoAQFKiarr5vFwJClC21M1sI=";
+        private static string encKey = null;
+        private static string EncryptionKey
+        {
+            get {
+                if (encKey == null)
+                {
+                    if (!File.Exists("Key.txt"))
+                    {
+                        File.WriteAllText("Key.txt", GetMachineID());
+                    }
+                    encKey = File.ReadAllText("Key.txt");
+                }
+                return encKey;
+            }
+        }
 
         public static Func<string, string> Encrypt(AuditConfig conf)
         {
@@ -45,6 +59,7 @@ namespace SqlAuditor.Config
         public static string Encrypt(string clearText) { return Encrypt(EncryptionKey, clearText); }
         public static string Encrypt(string encKey,string clearText)
         {
+            if (string.IsNullOrEmpty(clearText)) return clearText;
             byte[] clearBytes = Encoding.Unicode.GetBytes(clearText);
             using (Aes encryptor = Aes.Create())
             {
@@ -67,6 +82,7 @@ namespace SqlAuditor.Config
         public static string Decrypt(string cipherText) { return Decrypt(EncryptionKey, cipherText); }
         public static string Decrypt(string encKey, string cipherText)
         {
+            if (string.IsNullOrEmpty(cipherText)) return cipherText;
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
             using (Aes encryptor = Aes.Create())
             {

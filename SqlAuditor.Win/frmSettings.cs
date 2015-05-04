@@ -10,6 +10,7 @@ using MetroFramework.Controls;
 using SqlAuditor.Config;
 using System.Data.SqlClient;
 using SqlAuditor.Trace;
+using MetroFramework;
 
 namespace SqlAuditor.Win
 {
@@ -44,7 +45,6 @@ namespace SqlAuditor.Win
             this.txtEmailAddress.DataBindings.Add(new Binding("Text", Trace.EmailConfig, "EmailAddress"));
             this.cbEmailEnabled.DataBindings.Add(new Binding("Checked", Trace.EmailConfig, "Enabled"));
             this.cbEmailUseSSL.DataBindings.Add(new Binding("Checked", Trace.EmailConfig, "UseSSL"));
-
         }
 
 
@@ -56,7 +56,7 @@ namespace SqlAuditor.Win
             txtPassword.Enabled = !cbIntegratedSecurity.Checked;
         }
 
-        private Tuple<bool, Exception> CheckConnection()
+        private Tuple<bool, Exception> CheckConnection(bool populate)
         {
             using (var conn = new SqlConnection(Trace.Instance.ConnectionString))
             {
@@ -64,7 +64,7 @@ namespace SqlAuditor.Win
                 {
                     conn.Open();
                     conn.Close();
-                    PopulateData();
+                    if (populate) PopulateData();
                     return new Tuple<bool, Exception>(true, null);
                 }
                 catch (Exception ex)
@@ -104,11 +104,19 @@ namespace SqlAuditor.Win
                     flt.Value);
             }
             grdFilters.ResumeDrawing();
+
+            grdEmailReceipients.SuspendDrawing();
+            grdEmailReceipients.Rows.Clear();
+            foreach (var email in Trace.EmailConfig.Receipients)
+            {
+                grdEmailReceipients.Rows.Add(email);
+            }
+            grdEmailReceipients.ResumeDrawing();
         }
 
         private void btnCheckConnection_Click(object sender, EventArgs e)
         {
-            var res = CheckConnection();
+            var res = CheckConnection(true);
             // SetTabsEnable(res.Item1);
             if (res.Item1)
             {
@@ -158,59 +166,78 @@ namespace SqlAuditor.Win
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Trace.Events.Clear();
-            Trace.EmailConfig.Events.Clear();
-            List<int> cols = new List<int>();
-            foreach (DataGridViewRow row in grdColumns.Rows)
+            if (CheckConnection(false).Item1)
             {
-                if (!row.IsNewRow)
+                Trace.Events.Clear();
+                Trace.EmailConfig.Events.Clear();
+                List<int> cols = new List<int>();
+                foreach (DataGridViewRow row in grdColumns.Rows)
                 {
-                    if ((bool)row.Cells["colColumnEnable"].Value)
+                    if (!row.IsNewRow)
                     {
-                        cols.Add(context.SqlTraceColumns.Where((c) => c.Value.Name == row.Cells["colColumn"].Value.ToString()).First().Key);
+                        if ((bool)row.Cells["colColumnEnable"].Value)
+                        {
+                            cols.Add(context.SqlTraceColumns.Where((c) => c.Value.Name == row.Cells["colColumn"].Value.ToString()).First().Key);
+                        }
                     }
                 }
-            }
-            foreach (DataGridViewRow row in grdEvents.Rows)
-            {
-                if (!row.IsNewRow)
+                foreach (DataGridViewRow row in grdEvents.Rows)
                 {
-                    if ((bool)row.Cells["colEnable"].Value)
+                    if (!row.IsNewRow)
                     {
-                        Trace.Events.Add(new EventConfig(context.SqlTraceEvents.Where((evt) => evt.Value.Name == row.Cells["colEvent"].Value.ToString()).First().Key, cols.ToArray()));
-                    }
-                    if ((bool)row.Cells["colEmail"].Value)
-                    {
-                        Trace.EmailConfig.Events.Add(context.SqlTraceEvents.Where((evt) => evt.Value.Name == row.Cells["colEvent"].Value.ToString()).First().Key);
+                        if ((bool)row.Cells["colEnable"].Value)
+                        {
+                            Trace.Events.Add(new EventConfig(context.SqlTraceEvents.Where((evt) => evt.Value.Name == row.Cells["colEvent"].Value.ToString()).First().Key, cols.ToArray()));
+                        }
+                        if ((bool)row.Cells["colEmail"].Value)
+                        {
+                            Trace.EmailConfig.Events.Add(context.SqlTraceEvents.Where((evt) => evt.Value.Name == row.Cells["colEvent"].Value.ToString()).First().Key);
+                        }
                     }
                 }
-            }
-            Trace.Filters.Clear();
-            foreach (DataGridViewRow row in grdFilters.Rows)
-            {
-                if (!row.IsNewRow)
+                Trace.Filters.Clear();
+                foreach (DataGridViewRow row in grdFilters.Rows)
                 {
-                    Trace.Filters.Add(new EventFilter(
-                        context.SqlTraceColumns.Where((c) => c.Value.Name == row.Cells["colFilterCol"].Value.ToString()).First().Key,
-                        (int)colComparisonOperator.GetIndex(row.Cells["colComparisonOperator"].Value.ToString()),
-                        (int)colLogicalOperator.GetIndex(row.Cells["colLogicalOperator"].Value.ToString()),
-                        row.Cells["colValue"].Value
-                        ));
+                    if (!row.IsNewRow)
+                    {
+                        Trace.Filters.Add(new EventFilter(
+                            context.SqlTraceColumns.Where((c) => c.Value.Name == row.Cells["colFilterCol"].Value.ToString()).First().Key,
+                            (int)colComparisonOperator.GetIndex(row.Cells["colComparisonOperator"].Value.ToString()),
+                            (int)colLogicalOperator.GetIndex(row.Cells["colLogicalOperator"].Value.ToString()),
+                            row.Cells["colValue"].Value
+                            ));
+                    }
                 }
+                Trace.EmailConfig.Receipients.Clear();
+                foreach (DataGridViewRow row in grdEmailReceipients.Rows)
+                {
+                    if (!row.IsNewRow)
+                    {
+                        Trace.EmailConfig.Receipients.Add(row.Cells["colReceipient"].Value.ToString());
+                    }
+                }
+                this.DialogResult = System.Windows.Forms.DialogResult.OK;
+                this.Close();
             }
-            this.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.Close();
+            else
+            {
+                MetroMessageBox.Show(this, "Settings are not valid.\nPlease check them again.", "Error Saving Data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void frmSettings_Load(object sender, EventArgs e)
         {
-            if (!isnew) CheckConnection();
+            if (!isnew) CheckConnection(true);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Close();
+            var res = MetroMessageBox.Show(this, "Do you wan't to continue and cancel the changes?", "Cancel changes", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (res == System.Windows.Forms.DialogResult.Yes)
+            {
+                this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+                this.Close();
+            }
         }
 
 

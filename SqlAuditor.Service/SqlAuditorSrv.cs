@@ -20,7 +20,7 @@ namespace SqlAuditor.Service
         protected override void OnStart(string[] args)
         {
             auditor = new SqlAuditor(Config.AuditConfig.Load("Config.xml"));
-            auditor.RegisterObserver(typeof(DBLogger));
+            auditor.RegisterObserver(new GenericTraceObserverFactory((context) => new DBLogger()));
             auditor.Start();
             auditor.WaitAll();
         }

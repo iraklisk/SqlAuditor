@@ -56,8 +56,8 @@ namespace SqlAuditor.Config
         {
             conf.Traces.ForEach((trace) =>
             {
-                trace.Instance.Password = EncryptionUtils.Encrypt(conf)(trace.Instance.Password);
-                trace.EmailConfig.Password = EncryptionUtils.Encrypt(conf)(trace.EmailConfig.Password);
+                    trace.Instance.Password = EncryptionUtils.Encrypt(conf)(trace.Instance.Password);
+                   trace.EmailConfig.Password = EncryptionUtils.Encrypt(conf)(trace.EmailConfig.Password);
             });
         }
     }

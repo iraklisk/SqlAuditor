@@ -23,8 +23,8 @@ namespace SqlAuditor.ConsoleServer
             var config = AuditConfig.Load("Config.xml");
             auditor = new SqlAuditor(config);
             Console.WriteLine("SqlAuditor: Registering Observers...");
-            auditor.RegisterObserver(typeof(ConsoleTrace));
-            auditor.RegisterObserver(typeof(DBLogger));
+            auditor.RegisterObserver(new GenericTraceObserverFactory((context)=> new ConsoleTrace()));
+            auditor.RegisterObserver(new GenericTraceObserverFactory((context) => new DBLogger()));
             auditor.Start();
             Console.WriteLine("SqlAuditor: Started.");
             Console.WriteLine("Press CTR+C to exit.");
