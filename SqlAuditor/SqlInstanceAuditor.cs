@@ -15,8 +15,6 @@ namespace SqlAuditor
     {
         private InstanceConfig instance;
         private TraceConfig trace;
-        //private RawTraceReader rtr;
-        //private SqlConnection conn;
         private TraceConnection traceConn;
         private Task tsk;
         private CancellationTokenSource ts;
@@ -30,14 +28,14 @@ namespace SqlAuditor
             this.trace = context.Trace;
             this.instance = trace.Instance;
             this.context = context;
-            //this.conn = new SqlConnection(instance.ConnectionString);
             ts = new CancellationTokenSource();
-            tsk = new Task(InternalStart, ts.Token,TaskCreationOptions.LongRunning);
-      
+            tsk = new Task(InternalStart, ts.Token, TaskCreationOptions.LongRunning);
+
             queue = new ConcurrentQueue<TraceEvent>();
             this.observers = context.TraceObservers;
         }
 
+        public Task ExecutionTask { get { return tsk; } }
 
         private void InternalStart()
         {
@@ -74,17 +72,17 @@ namespace SqlAuditor
 
         public void Start()
         {
+            var appFilter = new EventFilter(TraceColumns.ApplicationName, LogicalOperators.AND, ComparisonOperators.NotLike, "SqlAuditor");
             traceConn = new TraceConnection(context);
             traceConn.CreateTrace();
             foreach (var pe in trace.Events)
             {
                 traceConn.SetEvent(pe.Event, pe.Columns);
             }
-            foreach (var ef in trace.Filters.OrderBy((ef)=>ef.Column))
+            foreach (var ef in trace.Filters.Union(new[] { appFilter }).OrderBy((ef) => ef.Column))
             {
-                    traceConn.SetFilter(ef.Column, LogicalOperators.AND, ef.Operator, ef.Value);
+                traceConn.SetFilter(ef.Column, ef.LogicalOperator, ef.ComparisonOperator, ef.Value);
             }
-            traceConn.SetFilter(10, LogicalOperators.AND, ComparisonOperators.NotLike, "SqlAuditor");
             traceConn.StartTrace();
             tsk.Start();
             timer = new Timer(new TimerCallback(ConsumeEvents), new object(), new TimeSpan(0, 0, 5), new TimeSpan(0, 0, 5));
@@ -103,7 +101,7 @@ namespace SqlAuditor
 
         public void Dispose()
         {
-           if(isRunning) Stop();
+            if (isRunning) Stop();
         }
     }
 }

@@ -45,6 +45,11 @@ namespace SqlAuditor
 
         }
 
+        public void WaitAll()
+        {
+            auditors.Select((auditor) => auditor.ExecutionTask).ToList().ForEach((tsk) => tsk.Wait());
+        }
+
         public void Stop()
         {
             foreach (var auditor in auditors)

@@ -12,13 +12,15 @@ namespace SqlAuditor.Config
     {
         public int Column { get; set; }
         public object Value { get; set; }
-        public int Operator { get; set; }
+        public int ComparisonOperator { get; set; }
+        public int LogicalOperator { get; set; }
         internal EventFilter() { }
-        public EventFilter(int column, object value, int op)
+        public EventFilter(int column, int comparisonOperator, int logicalOperator, object value)
         {
             this.Column = column;
             this.Value = value;
-            this.Operator = op;
+            this.ComparisonOperator = comparisonOperator;
+            this.LogicalOperator = logicalOperator;
         }
     }
 }

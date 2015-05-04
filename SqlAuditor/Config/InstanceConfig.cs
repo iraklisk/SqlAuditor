@@ -15,24 +15,24 @@ namespace SqlAuditor.Config
 
         public string Password { get; set; }
 
-        public string LogDB { get; set; }
+        public string AuditDB { get; set; }
         public bool IntegratedSecurity { get; set; }
 
         internal InstanceConfig() { }
-        public InstanceConfig(string dataSource, string username, string password, string logDB)
+        public InstanceConfig(string dataSource, string username, string password, string auditDB)
         {
             this.DataSource = dataSource;
             this.Username = username;
             this.Password = password;
             this.IntegratedSecurity = false;
-            this.LogDB = logDB;
+            this.AuditDB = auditDB;
         }
 
-        public InstanceConfig(string dataSource, string logDB)
+        public InstanceConfig(string dataSource, string auditDB)
         {
             this.DataSource = dataSource;
             this.IntegratedSecurity = true;
-            this.LogDB = logDB;
+            this.AuditDB = auditDB;
         }
 
         public string ConnectionString
@@ -42,7 +42,7 @@ namespace SqlAuditor.Config
                 sqlConnBuilder.ApplicationName = "SqlAuditor";
                 sqlConnBuilder.DataSource = DataSource;
                 sqlConnBuilder.IntegratedSecurity = IntegratedSecurity;
-                sqlConnBuilder.InitialCatalog = LogDB;
+                sqlConnBuilder.InitialCatalog = AuditDB;
                 if (!IntegratedSecurity)
                 {
                     sqlConnBuilder.UserID = Username;

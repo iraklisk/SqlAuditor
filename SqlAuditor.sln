@@ -9,6 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlAuditor.ConsoleServer", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlAuditor.Service", "SqlAuditor.Service\SqlAuditor.Service.csproj", "{33E4BE21-0CD9-42B9-A659-CAB410118808}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E0F47607-A70E-4315-A6FA-5BB512413DA7}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlAuditor.Win", "SqlAuditor.Win\SqlAuditor.Win.csproj", "{DAF02BFC-D612-42CB-A49E-D41DAD3C1038}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +34,10 @@ Global
 		{33E4BE21-0CD9-42B9-A659-CAB410118808}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33E4BE21-0CD9-42B9-A659-CAB410118808}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33E4BE21-0CD9-42B9-A659-CAB410118808}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAF02BFC-D612-42CB-A49E-D41DAD3C1038}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF02BFC-D612-42CB-A49E-D41DAD3C1038}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF02BFC-D612-42CB-A49E-D41DAD3C1038}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF02BFC-D612-42CB-A49E-D41DAD3C1038}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

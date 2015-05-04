@@ -22,6 +22,7 @@ namespace SqlAuditor.Service
             auditor = new SqlAuditor(Config.AuditConfig.Load("Config.xml"));
             auditor.RegisterObserver(typeof(DBLogger));
             auditor.Start();
+            auditor.WaitAll();
         }
 
         protected override void OnStop()

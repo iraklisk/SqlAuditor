@@ -10,9 +10,12 @@ namespace SqlAuditor.Config
     public class TraceConfig
     {
         public InstanceConfig Instance { get; set; }
+       
         public List<EventConfig> Events { get; set; }
 
         public List<EventFilter> Filters { get; set; }
+
+        public EmailConfig EmailConfig { get; set; }
 
         internal TraceConfig()
         {
@@ -23,6 +26,7 @@ namespace SqlAuditor.Config
             this.Instance = instance;
             this.Events = new List<EventConfig>();
             this.Filters = new List<EventFilter>();
+            this.EmailConfig = new EmailConfig();
         }
     }
 }

@@ -16,6 +16,8 @@ namespace SqlAuditor.ConsoleServer
         [STAThread]
         static void Main(string[] args)
         {
+            System.Console.WriteLine(EncryptionUtils.GetMachineID());
+
             System.Console.CancelKeyPress += Console_CancelKeyPress;
             Console.WriteLine("SqlAuditor: Reading Config...");
             var config = AuditConfig.Load("Config.xml");
@@ -26,10 +28,7 @@ namespace SqlAuditor.ConsoleServer
             auditor.Start();
             Console.WriteLine("SqlAuditor: Started.");
             Console.WriteLine("Press CTR+C to exit.");
-            while (true)
-            {
-                Thread.Sleep(new TimeSpan(0, 0, 5));
-            }
+            auditor.WaitAll();
         }
 
         static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)

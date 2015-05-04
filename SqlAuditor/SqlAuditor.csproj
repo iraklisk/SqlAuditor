@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,10 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\AuditConfig.cs" />
+    <Compile Include="Config\EmailConfig.cs" />
+    <Compile Include="Config\EncryptionOptions.cs" />
+    <Compile Include="Config\EncryptionUtils.cs" />
     <Compile Include="Config\EventConfig.cs" />
     <Compile Include="Config\EventFilter.cs" />
     <Compile Include="Config\InstanceConfig.cs" />
     <Compile Include="DBLogger.cs" />
+    <Compile Include="EmailProvider.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
