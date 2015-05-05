@@ -14,6 +14,7 @@ namespace SqlAuditor.Service
         /// </summary>
         static void Main()
         {
+            System.IO.Directory.SetCurrentDirectory(System.AppDomain.CurrentDomain.BaseDirectory);
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
             { 

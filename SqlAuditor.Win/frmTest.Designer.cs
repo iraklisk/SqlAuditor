@@ -34,6 +34,8 @@
             this.grdEvents = new MetroFramework.Controls.MetroGrid();
             this.colCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEvent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cbUseEmailProvider = new MetroFramework.Controls.MetroCheckBox();
+            this.btnStartStop = new MetroFramework.Controls.MetroButton();
             ((System.ComponentModel.ISupportInitialize)(this.grdEvents)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,7 +74,7 @@
             this.grdEvents.EnableHeadersVisualStyles = false;
             this.grdEvents.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.grdEvents.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.grdEvents.Location = new System.Drawing.Point(23, 63);
+            this.grdEvents.Location = new System.Drawing.Point(23, 101);
             this.grdEvents.Name = "grdEvents";
             this.grdEvents.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -85,8 +87,9 @@
             this.grdEvents.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.grdEvents.RowHeadersVisible = false;
             this.grdEvents.RowHeadersWidth = 50;
+            this.grdEvents.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.grdEvents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdEvents.Size = new System.Drawing.Size(746, 379);
+            this.grdEvents.Size = new System.Drawing.Size(746, 341);
             this.grdEvents.TabIndex = 3;
             // 
             // colCategory
@@ -103,11 +106,33 @@
             this.colEvent.Name = "colEvent";
             this.colEvent.ReadOnly = true;
             // 
+            // cbUseEmailProvider
+            // 
+            this.cbUseEmailProvider.AutoSize = true;
+            this.cbUseEmailProvider.Location = new System.Drawing.Point(23, 63);
+            this.cbUseEmailProvider.Name = "cbUseEmailProvider";
+            this.cbUseEmailProvider.Size = new System.Drawing.Size(95, 15);
+            this.cbUseEmailProvider.TabIndex = 4;
+            this.cbUseEmailProvider.Text = "Enable Emails";
+            this.cbUseEmailProvider.UseSelectable = true;
+            // 
+            // btnStartStop
+            // 
+            this.btnStartStop.Location = new System.Drawing.Point(124, 63);
+            this.btnStartStop.Name = "btnStartStop";
+            this.btnStartStop.Size = new System.Drawing.Size(75, 23);
+            this.btnStartStop.TabIndex = 5;
+            this.btnStartStop.Text = "Start";
+            this.btnStartStop.UseSelectable = true;
+            this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
+            // 
             // frmTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 469);
+            this.Controls.Add(this.btnStartStop);
+            this.Controls.Add(this.cbUseEmailProvider);
             this.Controls.Add(this.grdEvents);
             this.Name = "frmTest";
             this.Text = "Test Audit Config - ";
@@ -116,6 +141,7 @@
             this.Shown += new System.EventHandler(this.frmTest_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.grdEvents)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -124,5 +150,7 @@
         private MetroFramework.Controls.MetroGrid grdEvents;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCategory;
         private System.Windows.Forms.DataGridViewTextBoxColumn colEvent;
+        private MetroFramework.Controls.MetroCheckBox cbUseEmailProvider;
+        private MetroFramework.Controls.MetroButton btnStartStop;
     }
 }

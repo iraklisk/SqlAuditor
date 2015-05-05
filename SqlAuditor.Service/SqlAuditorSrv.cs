@@ -21,8 +21,9 @@ namespace SqlAuditor.Service
         {
             auditor = new SqlAuditor(Config.AuditConfig.Load("Config.xml"));
             auditor.RegisterObserver(new GenericTraceObserverFactory((context) => new DBLogger()));
+            auditor.RegisterObserver(new GenericTraceObserverFactory((context) => new EmailProvider()));
             auditor.Start();
-            auditor.WaitAll();
+          //  auditor.WaitAll();
         }
 
         protected override void OnStop()

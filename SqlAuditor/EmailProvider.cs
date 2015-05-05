@@ -45,7 +45,7 @@ namespace SqlAuditor
                 sb.AppendLine("Power by SqlAuditor.");
                 sb.AppendLine("http://github.com/iraklisk/SqlAuditor");
                 msg.Body = sb.ToString();
-                smtp.SendAsync(msg, new object());
+                smtp.Send(msg);
             }
         }
     }
