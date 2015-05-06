@@ -13,6 +13,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
+using System.ServiceProcess;
 using System.Text;
 using System.Windows.Forms;
 
@@ -262,12 +264,13 @@ namespace SqlAuditor.Win
 
         private void metroLink1_Click(object sender, EventArgs e)
         {
-            Process.Start(@"http://iraklisk.github.io/SqlAuditor");
+            Process.Start(@"http://github.com/iraklisk/SqlAuditor");
         }
 
         private void metroTile2_Click(object sender, EventArgs e)
         {
-            Process.Start(@"http://github.com/iraklisk/SqlAuditor");
+            Process.Start(@"http://iraklisk.github.io/SqlAuditor");
+
         }
 
         private void mtAuditViewer_Click(object sender, EventArgs e)
@@ -282,13 +285,88 @@ namespace SqlAuditor.Win
 
         private void metroLink2_Click(object sender, EventArgs e)
         {
-            Process.Start(@"http://iraklisk.github.io/SqlAuditor");
+            Process.Start(@"http://github.com/iraklisk/SqlAuditor");
         }
 
         private void mtDocumentation_Click(object sender, EventArgs e)
         {
             Process.Start(@"https://github.com/iraklisk/SqlAuditor/wiki");
         }
+        private void InstallService()
+        {
+            try
+            {
+                System.Configuration.Install.AssemblyInstaller installer = new System.Configuration.Install.AssemblyInstaller("SqlAuditor.Service.exe", new string[] { });
+                installer.UseNewContext = true;
+                installer.Install(null);
+                installer.Commit(null);
+                MetroMessageBox.Show(this, "SqlAuditor service successfully installed.", "SqlAuditor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, "Error installing SqlAuditor Service.\n" + ex.Message, "SqlAuditor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
+        private void UninstallService()
+        {
+            try
+            {
+                System.Configuration.Install.AssemblyInstaller installer = new System.Configuration.Install.AssemblyInstaller("SqlAuditor.Service.exe", new string[] { });
+                installer.UseNewContext = true;
+                installer.Uninstall(null);
+                installer.Commit(null);
+                MetroMessageBox.Show(this, "SqlAuditor service successfully uninstalled.", "SqlAuditor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MetroMessageBox.Show(this, "Error uninstalling SqlAuditor Service.\n" + ex.Message, "SqlAuditor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        void StartStopService()
+        {
+            ServiceController service = new ServiceController("SqlAuditor","127.0.0.1");
+            try
+            {
+                if (!File.Exists("Config.xml"))
+                {
+                    throw new Exception("Configuration file doesn't exists.\nGo to Settings and add a new instance.");
+                }
+
+                TimeSpan timeout = TimeSpan.FromSeconds(10);
+                var desiredStatus = ServiceControllerStatus.Running;
+                if (service.Status == ServiceControllerStatus.Stopped)
+                {
+                    service.Start();
+                }
+                else if (service.Status == ServiceControllerStatus.Running)
+                {
+                    service.Stop();
+                    desiredStatus = ServiceControllerStatus.Stopped;
+                }
+                service.WaitForStatus(desiredStatus,timeout);
+            }
+            catch(Exception ex)
+            {
+                MetroMessageBox.Show(this, "Error Starting/Stoping SqlAuditor Service.\n" + ex.Message, "SqlAuditor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void mtInstallService_Click(object sender, EventArgs e)
+        {
+            InstallService();
+        }
+
+        private void mtRemoveService_Click(object sender, EventArgs e)
+        {
+            UninstallService();
+        }
+
+        private void mtStartStopService_Click(object sender, EventArgs e)
+        {
+            StartStopService();
+        }
     }
 }
