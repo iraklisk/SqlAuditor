@@ -260,5 +260,35 @@ namespace SqlAuditor.Win
             }
         }
 
+        private void metroLink1_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"http://iraklisk.github.io/SqlAuditor");
+        }
+
+        private void metroTile2_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"http://github.com/iraklisk/SqlAuditor");
+        }
+
+        private void mtAuditViewer_Click(object sender, EventArgs e)
+        {
+            mtcMain.SelectedTab = mtpAuditViewe;
+        }
+
+        private void mtSettings_Click(object sender, EventArgs e)
+        {
+            mtcMain.SelectedTab = mtpSettings;
+        }
+
+        private void metroLink2_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"http://iraklisk.github.io/SqlAuditor");
+        }
+
+        private void mtDocumentation_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"https://github.com/iraklisk/SqlAuditor/wiki");
+        }
+
     }
 }

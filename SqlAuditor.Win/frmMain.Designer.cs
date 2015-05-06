@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.mtcMain = new MetroFramework.Controls.MetroTabControl();
             this.mtpHome = new MetroFramework.Controls.MetroTabPage();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
@@ -57,6 +57,13 @@
             this.ctxItmTest = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxItmSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.ctxItmDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
+            this.metroLink2 = new MetroFramework.Controls.MetroLink();
+            this.metroLink1 = new MetroFramework.Controls.MetroLink();
+            this.metroTile2 = new MetroFramework.Controls.MetroTile();
+            this.mtDocumentation = new MetroFramework.Controls.MetroTile();
+            this.mtSettings = new MetroFramework.Controls.MetroTile();
+            this.mtAuditViewer = new MetroFramework.Controls.MetroTile();
             this.mtcMain.SuspendLayout();
             this.mtpHome.SuspendLayout();
             this.mtpAuditViewe.SuspendLayout();
@@ -74,20 +81,24 @@
             this.mtcMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mtcMain.Location = new System.Drawing.Point(20, 60);
             this.mtcMain.Name = "mtcMain";
-            this.mtcMain.SelectedIndex = 1;
-            this.mtcMain.Size = new System.Drawing.Size(912, 512);
+            this.mtcMain.SelectedIndex = 0;
+            this.mtcMain.Size = new System.Drawing.Size(674, 414);
             this.mtcMain.TabIndex = 0;
             this.mtcMain.UseSelectable = true;
             // 
             // mtpHome
             // 
+            this.mtpHome.Controls.Add(this.metroTile2);
+            this.mtpHome.Controls.Add(this.mtDocumentation);
+            this.mtpHome.Controls.Add(this.mtSettings);
+            this.mtpHome.Controls.Add(this.mtAuditViewer);
             this.mtpHome.Controls.Add(this.metroLabel1);
             this.mtpHome.HorizontalScrollbarBarColor = true;
             this.mtpHome.HorizontalScrollbarHighlightOnWheel = false;
             this.mtpHome.HorizontalScrollbarSize = 10;
             this.mtpHome.Location = new System.Drawing.Point(4, 38);
             this.mtpHome.Name = "mtpHome";
-            this.mtpHome.Size = new System.Drawing.Size(904, 470);
+            this.mtpHome.Size = new System.Drawing.Size(666, 372);
             this.mtpHome.TabIndex = 0;
             this.mtpHome.Text = "Home";
             this.mtpHome.VerticalScrollbarBarColor = true;
@@ -120,7 +131,7 @@
             this.mtpAuditViewe.HorizontalScrollbarSize = 10;
             this.mtpAuditViewe.Location = new System.Drawing.Point(4, 38);
             this.mtpAuditViewe.Name = "mtpAuditViewe";
-            this.mtpAuditViewe.Size = new System.Drawing.Size(904, 470);
+            this.mtpAuditViewe.Size = new System.Drawing.Size(666, 372);
             this.mtpAuditViewe.TabIndex = 1;
             this.mtpAuditViewe.Text = "Audit Viewer";
             this.mtpAuditViewe.VerticalScrollbarBarColor = true;
@@ -151,7 +162,7 @@
             // 
             this.dtTo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtTo.Location = new System.Drawing.Point(342, 23);
-            this.dtTo.MinimumSize = new System.Drawing.Size(0, 29);
+            this.dtTo.MinimumSize = new System.Drawing.Size(4, 29);
             this.dtTo.Name = "dtTo";
             this.dtTo.Size = new System.Drawing.Size(109, 29);
             this.dtTo.TabIndex = 11;
@@ -160,7 +171,7 @@
             // 
             this.dtFrom.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtFrom.Location = new System.Drawing.Point(215, 23);
-            this.dtFrom.MinimumSize = new System.Drawing.Size(0, 29);
+            this.dtFrom.MinimumSize = new System.Drawing.Size(4, 29);
             this.dtFrom.Name = "dtFrom";
             this.dtFrom.Size = new System.Drawing.Size(109, 29);
             this.dtFrom.TabIndex = 10;
@@ -222,42 +233,42 @@
             this.grdEvents.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.grdEvents.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.grdEvents.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.grdEvents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.grdEvents.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.grdEvents.ColumnHeadersHeight = 35;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.grdEvents.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.grdEvents.DefaultCellStyle = dataGridViewCellStyle2;
             this.grdEvents.EnableHeadersVisualStyles = false;
             this.grdEvents.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.grdEvents.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.grdEvents.Location = new System.Drawing.Point(-1, 58);
+            this.grdEvents.Location = new System.Drawing.Point(4, 58);
             this.grdEvents.Name = "grdEvents";
             this.grdEvents.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.grdEvents.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.grdEvents.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.grdEvents.RowHeadersVisible = false;
             this.grdEvents.RowHeadersWidth = 50;
             this.grdEvents.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.grdEvents.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdEvents.Size = new System.Drawing.Size(909, 409);
+            this.grdEvents.Size = new System.Drawing.Size(666, 319);
             this.grdEvents.TabIndex = 4;
             // 
             // mtpSettings
@@ -271,7 +282,7 @@
             this.mtpSettings.HorizontalScrollbarSize = 10;
             this.mtpSettings.Location = new System.Drawing.Point(4, 38);
             this.mtpSettings.Name = "mtpSettings";
-            this.mtpSettings.Size = new System.Drawing.Size(904, 470);
+            this.mtpSettings.Size = new System.Drawing.Size(666, 372);
             this.mtpSettings.TabIndex = 2;
             this.mtpSettings.Text = "Settings";
             this.mtpSettings.VerticalScrollbarBarColor = true;
@@ -359,12 +370,110 @@
             this.ctxItmDelete.Text = "Delete";
             this.ctxItmDelete.Click += new System.EventHandler(this.ctxItmDelete_Click);
             // 
+            // metroLabel7
+            // 
+            this.metroLabel7.AutoSize = true;
+            this.metroLabel7.Location = new System.Drawing.Point(138, 30);
+            this.metroLabel7.Name = "metroLabel7";
+            this.metroLabel7.Size = new System.Drawing.Size(285, 19);
+            this.metroLabel7.TabIndex = 8;
+            this.metroLabel7.Text = "Simple yet powerful auditor for MS SQL Server";
+            // 
+            // metroLink2
+            // 
+            this.metroLink2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.metroLink2.Location = new System.Drawing.Point(517, 30);
+            this.metroLink2.Name = "metroLink2";
+            this.metroLink2.Size = new System.Drawing.Size(109, 62);
+            this.metroLink2.TabIndex = 9;
+            this.metroLink2.Text = "Visit us on github";
+            this.metroLink2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.metroLink2.UseSelectable = true;
+            this.metroLink2.Click += new System.EventHandler(this.metroLink2_Click);
+            // 
+            // metroLink1
+            // 
+            this.metroLink1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.metroLink1.BackgroundImage = global::SqlAuditor.Win.Properties.Resources.GitHubMark64px;
+            this.metroLink1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.metroLink1.Location = new System.Drawing.Point(632, 35);
+            this.metroLink1.Name = "metroLink1";
+            this.metroLink1.Size = new System.Drawing.Size(58, 57);
+            this.metroLink1.TabIndex = 1;
+            this.metroLink1.UseSelectable = true;
+            this.metroLink1.Click += new System.EventHandler(this.metroLink1_Click);
+            // 
+            // metroTile2
+            // 
+            this.metroTile2.ActiveControl = null;
+            this.metroTile2.Location = new System.Drawing.Point(344, 67);
+            this.metroTile2.Name = "metroTile2";
+            this.metroTile2.Size = new System.Drawing.Size(156, 205);
+            this.metroTile2.Style = MetroFramework.MetroColorStyle.Silver;
+            this.metroTile2.TabIndex = 7;
+            this.metroTile2.Text = "Source Code";
+            this.metroTile2.TileImage = global::SqlAuditor.Win.Properties.Resources.Octocat1;
+            this.metroTile2.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.metroTile2.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
+            this.metroTile2.UseSelectable = true;
+            this.metroTile2.UseTileImage = true;
+            this.metroTile2.Click += new System.EventHandler(this.metroTile2_Click);
+            // 
+            // mtDocumentation
+            // 
+            this.mtDocumentation.ActiveControl = null;
+            this.mtDocumentation.Location = new System.Drawing.Point(182, 67);
+            this.mtDocumentation.Name = "mtDocumentation";
+            this.mtDocumentation.Size = new System.Drawing.Size(156, 205);
+            this.mtDocumentation.Style = MetroFramework.MetroColorStyle.Yellow;
+            this.mtDocumentation.TabIndex = 6;
+            this.mtDocumentation.Text = "Documentation";
+            this.mtDocumentation.TileImage = global::SqlAuditor.Win.Properties.Resources.manual;
+            this.mtDocumentation.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.mtDocumentation.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
+            this.mtDocumentation.UseSelectable = true;
+            this.mtDocumentation.UseTileImage = true;
+            this.mtDocumentation.Click += new System.EventHandler(this.mtDocumentation_Click);
+            // 
+            // mtSettings
+            // 
+            this.mtSettings.ActiveControl = null;
+            this.mtSettings.Location = new System.Drawing.Point(20, 174);
+            this.mtSettings.Name = "mtSettings";
+            this.mtSettings.Size = new System.Drawing.Size(156, 98);
+            this.mtSettings.Style = MetroFramework.MetroColorStyle.Red;
+            this.mtSettings.TabIndex = 5;
+            this.mtSettings.Text = "Settings";
+            this.mtSettings.TileImage = global::SqlAuditor.Win.Properties.Resources.settings;
+            this.mtSettings.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.mtSettings.UseSelectable = true;
+            this.mtSettings.UseTileImage = true;
+            this.mtSettings.Click += new System.EventHandler(this.mtSettings_Click);
+            // 
+            // mtAuditViewer
+            // 
+            this.mtAuditViewer.ActiveControl = null;
+            this.mtAuditViewer.Location = new System.Drawing.Point(20, 67);
+            this.mtAuditViewer.Name = "mtAuditViewer";
+            this.mtAuditViewer.Size = new System.Drawing.Size(156, 101);
+            this.mtAuditViewer.Style = MetroFramework.MetroColorStyle.Blue;
+            this.mtAuditViewer.TabIndex = 4;
+            this.mtAuditViewer.Text = "Audit Viewer";
+            this.mtAuditViewer.TileImage = global::SqlAuditor.Win.Properties.Resources.logviewer;
+            this.mtAuditViewer.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.mtAuditViewer.UseSelectable = true;
+            this.mtAuditViewer.UseTileImage = true;
+            this.mtAuditViewer.Click += new System.EventHandler(this.mtAuditViewer_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
-            this.ClientSize = new System.Drawing.Size(952, 592);
+            this.ClientSize = new System.Drawing.Size(714, 494);
+            this.Controls.Add(this.metroLink2);
+            this.Controls.Add(this.metroLabel7);
+            this.Controls.Add(this.metroLink1);
             this.Controls.Add(this.mtcMain);
             this.Name = "frmMain";
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.SystemShadow;
@@ -382,6 +491,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.metroStyleManager1)).EndInit();
             this.ctxmInstance.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -412,6 +522,13 @@
         private MetroFramework.Controls.MetroGrid grdEvents;
         private MetroFramework.Controls.MetroButton btnExport;
         private MetroFramework.Controls.MetroButton btnRun;
+        private MetroFramework.Controls.MetroLink metroLink1;
+        private MetroFramework.Controls.MetroTile mtAuditViewer;
+        private MetroFramework.Controls.MetroTile mtDocumentation;
+        private MetroFramework.Controls.MetroTile mtSettings;
+        private MetroFramework.Controls.MetroTile metroTile2;
+        private MetroFramework.Controls.MetroLink metroLink2;
+        private MetroFramework.Controls.MetroLabel metroLabel7;
     }
 }
 
