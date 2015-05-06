@@ -26,7 +26,7 @@ I created SqlAuditor because we needed a solution to audit privileged accounts f
 
 ###Requirements###
 
-Microsft .Net Framework 4
+Microsoft .Net Framework 4
 
 ----------
 
@@ -39,7 +39,7 @@ When the project is finished we will.
 
 After you download and compile the project create a folder with SqlAuditor.dll, SqlAuditor.Service.exe, SqlAuditor.Win.exe
 
-1. Open SqlAuditorWin.exe
+1. Open SqlAuditor.Win.exe
 2. Navigate to Settings
 3. Click New
 4. Fill all the information
