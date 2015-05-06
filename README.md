@@ -24,34 +24,15 @@ I created SqlAuditor because we needed a solution to audit privileged accounts f
 
 ----------
 
-###Requirements###
+###Releases###
 
-Microsoft .Net Framework 4
+[SqlAuditor Downloads](https://github.com/iraklisk/SqlAuditor/releases)
 
 ----------
 
+###Documentation###
 
-###Installation and Usage###
-
-Currenlty we don't provide an installer so you need to get the sources and compile them.
-
-When the project is finished we will.
-
-After you download and compile the project create a folder with SqlAuditor.dll, SqlAuditor.Service.exe, SqlAuditor.Win.exe
-
-1. Open SqlAuditor.Win.exe
-2. Navigate to Settings
-3. Click New
-4. Fill all the information
-5. Click OK
-6. Open a command line as an administrator
-7. cd YOUR_FOLDER
-8. InstallUtil SqlAuditor.Service.exe
-9.  Start the Service
-
-The proccess will be automated when the development is completed.
-
-
+**Please check out our [Wiki](http://github.com/iraklisk/wiki) for installation and usage documentation.
 
 ----------
 
