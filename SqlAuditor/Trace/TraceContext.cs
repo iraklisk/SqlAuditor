@@ -16,9 +16,10 @@ namespace SqlAuditor.Trace
         public Dictionary<int, SqlTraceColumn> SqlTraceColumns { get; set; }
 
         public Dictionary<int, SqlTraceCategory> SqlTraceCategories { get; set; }
+
         public List<ITraceObserver> TraceObservers { get; set; }
 
-        public TraceContext(TraceConfig trace,List<ITraceObserver> observers)
+        public TraceContext(TraceConfig trace, List<ITraceObserver> observers)
         {
             this.Trace = trace;
             this.TraceObservers = observers;
@@ -87,6 +88,23 @@ namespace SqlAuditor.Trace
                         {
                             var ctgr = new SqlTraceCategory(da.GetInt16(0), da.GetString(1));
                             SqlTraceCategories.Add(ctgr.Id, ctgr);
+                        }
+                    }
+                }
+                using (SqlCommand cmd = new SqlCommand("select * from sys.trace_subclass_values", conn))
+                {
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var subclassvalue = new SqlTraceSubClassValue(dr.GetInt16(0), dr.GetInt16(1), dr.GetString(2), dr.GetInt16(3));
+
+                            if (!SqlTraceEvents[subclassvalue.EventId].SubClassValues.ContainsKey(subclassvalue.ColumnId))
+                            {
+                                SqlTraceEvents[subclassvalue.EventId].SubClassValues.Add(subclassvalue.ColumnId, new Dictionary<int, SqlTraceSubClassValue>());
+                            }
+                            SqlTraceEvents[subclassvalue.EventId].SubClassValues[subclassvalue.ColumnId].Add(subclassvalue.Value, subclassvalue);
+                            SqlTraceColumns[subclassvalue.ColumnId].HasSubClassValues = true;
                         }
                     }
                 }

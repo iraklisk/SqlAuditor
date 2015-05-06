@@ -25,10 +25,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -68,6 +69,7 @@
     <Compile Include="Trace\SqlTraceCategory.cs" />
     <Compile Include="Trace\SqlTraceColumn.cs" />
     <Compile Include="Trace\SqlTraceEvent.cs" />
+    <Compile Include="Trace\SqlTraceSubClassValue.cs" />
     <Compile Include="Trace\TraceColumns.cs" />
     <Compile Include="Trace\TraceConnection.cs" />
     <Compile Include="Trace\TraceContext.cs" />

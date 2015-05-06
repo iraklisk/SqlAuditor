@@ -8,28 +8,29 @@ namespace SqlAuditor
 {
     public class ConsoleTrace : ITraceObserver
     {
+        TraceContext context;
         public void EventReceived(TraceEvent traceEvent)
         {
-            Console.WriteLine("***********************************************");
-            Console.WriteLine("RequestID:\t{0}", traceEvent.RequestID);
-            Console.WriteLine("EventClass:\t{0}", traceEvent.EventClass);
-            Console.WriteLine("EventSequence:\t{0}", traceEvent.EventSequence);
-            Console.WriteLine("EventSubClass:\t{0}", traceEvent.EventSubClass);
-            Console.WriteLine("***********************************************");
-            Console.WriteLine("Application:\t{0}", traceEvent.ApplicationName);
-            Console.WriteLine("DatabaseName:\t{0}", traceEvent.DatabaseName);
-            Console.WriteLine("LoginName:\t{0}", traceEvent.LoginName);
-            Console.WriteLine("StartTime:\t{0}", traceEvent.StartTime);
-            Console.WriteLine("EndTime:\t{0}", traceEvent.EndTime);
-            Console.WriteLine("Duration:\t{0}", traceEvent.Duration);
-            Console.WriteLine(traceEvent.TextData);
-            Console.WriteLine("***********************************************");
-            Console.WriteLine();
+            var e = context.SqlTraceEvents[traceEvent.EventClass];
+            var evtCtgr = context.SqlTraceCategories[e.CategoryId];
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("**********************************************");
+            sb.AppendFormat("Event Name: {0}\n", e.Name);
+            sb.AppendFormat("Event Category: {0}\n", evtCtgr.Name);
+            foreach (var kv in traceEvent.Values)
+            {
+                sb.AppendFormat("{0}: {1}\n", context.SqlTraceColumns[kv.Key].Name, kv.Value.ToString());
+                if (context.SqlTraceColumns[kv.Key].HasSubClassValues && context.SqlTraceEvents[traceEvent.EventClass].SubClassValues.ContainsKey(kv.Key))
+                    sb.AppendFormat("{0}_VALUE: {1}\n", context.SqlTraceColumns[kv.Key].Name, context.SqlTraceEvents[traceEvent.EventClass].SubClassValues[kv.Key][(int)kv.Value].Name);
+            }
+            sb.AppendLine("**********************************************");
+            sb.AppendLine();
+            Console.WriteLine(sb.ToString());
         }
 
         public void Init(TraceContext context)
         {
-            
+            this.context = context;
         }
     }
 }

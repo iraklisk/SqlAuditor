@@ -16,8 +16,6 @@ namespace SqlAuditor.ConsoleServer
         [STAThread]
         static void Main(string[] args)
         {
-            System.Console.WriteLine(EncryptionUtils.GetMachineID());
-
             System.Console.CancelKeyPress += Console_CancelKeyPress;
             Console.WriteLine("SqlAuditor: Reading Config...");
             var config = AuditConfig.Load("Config.xml");

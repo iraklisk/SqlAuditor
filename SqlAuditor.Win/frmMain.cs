@@ -1,11 +1,15 @@
-﻿using MetroFramework;
+﻿using DoddleReport;
+using MetroFramework;
 using MetroFramework.Controls;
 using MetroFramework.Forms;
 using SqlAuditor.Config;
+using SqlAuditor.Trace;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -39,11 +43,13 @@ namespace SqlAuditor.Win
         void ReloadTraceInstances()
         {
             flInstances.SuspendDrawing();
+            cbInstances.BeginUpdate();
+            cbInstances.Items.Clear();
             flInstances.Controls.Clear();
             foreach (var trace in auditConfig.Traces)
             {
+                cbInstances.Items.Add(trace.Instance.DataSource);
                 var mtile = new MetroTile();
-
                 mtile.ActiveControl = null;
                 mtile.Size = new System.Drawing.Size(160, 70);
                 mtile.TabIndex = 4;
@@ -53,6 +59,7 @@ namespace SqlAuditor.Win
                 mtile.MouseUp += mtile_MouseUp;
                 this.flInstances.Controls.Add(mtile);
             }
+            cbInstances.EndUpdate();
             flInstances.ResumeDrawing();
         }
 
@@ -87,7 +94,7 @@ namespace SqlAuditor.Win
             var frmSett = new frmSettings(isnew, trace);
             if (frmSett.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if(isnew)auditConfig.Traces.Add(frmSett.Trace);
+                if (isnew) auditConfig.Traces.Add(frmSett.Trace);
                 SaveConfig();
             }
             else
@@ -130,6 +137,126 @@ namespace SqlAuditor.Win
                 auditConfig.Traces.Remove(trace);
                 SaveConfig();
                 ReloadTraceInstances();
+            }
+        }
+
+        private void AddColumn(string name, string title)
+        {
+            var col = new DataGridViewTextBoxColumn();
+            col.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            col.Resizable = DataGridViewTriState.True;
+            col.HeaderText = title;
+            col.MinimumWidth = 60;
+            col.Name = name;
+            col.ReadOnly = true;
+            grdEvents.Columns.Add(col);
+        }
+
+        private DataSet fetchData(TraceContext context, List<int> columns)
+        {
+            var ds = new DataSet();
+            using (var conn = new SqlConnection(context.Trace.Instance.ConnectionString))
+            {
+                conn.Open();
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("SELECT");
+                sb.AppendLine("EVENTCATEGORY as EventCategory");
+                sb.AppendLine(",EVENTNAME as EventName");
+                sb.AppendLine(",EVENTDATETIME as EventaDateTime");
+                columns.ForEach((c) =>
+                {
+                    if (context.SqlTraceColumns[c].HasSubClassValues)
+                        sb.AppendFormat(",[{0}_VALUE] as [{0}]\n", context.SqlTraceColumns[c].Name);
+                    else sb.AppendFormat(",[{0}]\n", context.SqlTraceColumns[c].Name);
+                });
+                sb.AppendLine("FROM SqlAuditor_EventsLog");
+                sb.AppendLine("WHERE");
+                sb.AppendLine("CONVERT(DATE,EVENTDATETIME) BETWEEN @DTFROM and @DTTO");
+                using (SqlCommand cmd = new SqlCommand(sb.ToString(), conn))
+                {
+                    cmd.Parameters.Add("@DTFROM", SqlDbType.Date).Value = dtFrom.Value.Date;
+                    cmd.Parameters.Add("@DTTO", SqlDbType.Date).Value = dtTo.Value.Date;
+                    using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                    {
+                        da.Fill(ds);
+                    }
+                }
+                conn.Close();
+            }
+            return ds;
+        }
+
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(cbInstances.Text))
+            {
+                var trace = auditConfig.Traces.First((t) => t.Instance.DataSource == cbInstances.Text);
+                var context = new TraceContext(trace, (new ITraceObserver[] { }).ToList());
+                var columns = new List<int>();
+                trace.Events.ForEach((evt) => evt.Columns.ToList().ForEach((c) =>
+                {
+                    if (!columns.Contains(c)) columns.Add(c);
+                }));
+                var ds = fetchData(context, columns);
+                this.grdEvents.DataSource = ds.Tables[0];
+            }
+        }
+
+        private void Export(TraceContext context, DataSet ds, IReportWriter writer, string filepath)
+        {
+
+
+            var report = new Report(ds.Tables[0].ToReportSource());
+
+
+            // Customize the Text Fields
+            report.TextFields.Title = "SqlAuditor - Events Log";
+            report.TextFields.Footer = "Powered by SqlAuditor.\n" + @"http://github.com/iraklisk/SqlAuditor";
+            report.TextFields.Header = String.Format("Instance: {0}\nFrom: {1}\nTo: {2}\nReport Generated: {3}", context.Trace.Instance.DataSource, dtFrom.Value.ToShortDateString(), dtTo.Value.ToShortDateString(), DateTime.Now);
+            report.RenderHints.Orientation = ReportOrientation.Landscape;
+            report.RenderHints.BooleanCheckboxes = true;
+            using (var stream = new FileStream(filepath, FileMode.Create))
+            {
+                writer.WriteReport(report, stream);
+            }
+
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            using (var sfd = new SaveFileDialog())
+            {
+                if (!String.IsNullOrEmpty(cbInstances.Text))
+                {
+                    sfd.Filter = "Excel File|*.xlsx|PDF|*.pdf";
+                    if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+
+                        var trace = auditConfig.Traces.First((t) => t.Instance.DataSource == cbInstances.Text);
+                        var context = new TraceContext(trace, (new ITraceObserver[] { }).ToList());
+                        var columns = new List<int>();
+                        trace.Events.ForEach((evt) => evt.Columns.ToList().ForEach((c) =>
+                        {
+                            if (!columns.Contains(c)) columns.Add(c);
+                        }));
+                        var ds = fetchData(context, columns);
+
+                        IReportWriter writer;
+                        if (sfd.FileName.EndsWith(".pdf"))
+                        {
+                            writer = new DoddleReport.iTextSharp.PdfReportWriter();
+                        }
+                        else
+                        {
+                            writer = new DoddleReport.OpenXml.ExcelReportWriter();
+                        }
+                        Export(context, ds, writer, sfd.FileName);
+                        if (MetroMessageBox.Show(this, "Open file?", "Open File", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.Yes)
+                        {
+                            Process.Start(sfd.FileName);
+                        }
+                    }
+                }
             }
         }
 

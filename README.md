@@ -3,7 +3,7 @@
 
 I created SqlAuditor because we needed a solution to audit privileged accounts for ISO-27001 and SOLVENCY.
 
-**Please feel free to contact me for any help, issue or suggestion you have for the project.**
+**Please feel free to contact me for any help, issues or suggestions.**
 
 
 
@@ -13,34 +13,22 @@ I created SqlAuditor because we needed a solution to audit privileged accounts f
 
 ###SqlAuditor features###
  1. Audit multiple MS SQL Server instances.
- 2. Log audit events to Database.
- 3. Support SQL Server Authentication or Windows Authentication.
- 4. Support selecting different Events, Columns and Filters per Instance.
- 5. Support selecting for which events you want to receive an email per instance.
+ 2. Persists audit events.
+ 3. Support Both SQL Server Authentication/Windows Authentication.
+ 4. Events,Columns and Filter per SQL Server instances.
+ 5. Email notification for selected events.
  7. Runs as a service.
  8. Easy GUI for Configuration, Testing and Reporting.
- 9. Exports events per instance to Microsoft Excel (XLSX)
-
-
- 
-----------
-
-
-
-###Project Status###
-
-SqlAuditor is finished.
-
-SqlAuditor.Console is finished.
-
-SqlAuditor.Service is finished.
-
-SqlAuditor.Win is currently under development.
-
+ 9. Export audit events to Microsoft Excel and PDF.
 
 
 ----------
 
+###Requirements###
+
+Microsft .Net Framework 4
+
+----------
 
 
 ###Installation and Usage###

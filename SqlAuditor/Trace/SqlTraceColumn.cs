@@ -13,7 +13,7 @@ namespace SqlAuditor.Trace
         public SqlDbType DbType { get; set; }
         public int MaxLength { get; set; }
         public bool IsFilterable { get; set; }
-
+        public bool HasSubClassValues { get; set; }
         public SqlTraceColumn(int id, string name, SqlDbType dbType, int maxLength, bool isFilterable)
         {
             this.Id = id;
@@ -21,6 +21,7 @@ namespace SqlAuditor.Trace
             this.DbType = dbType;
             this.MaxLength = maxLength;
             this.IsFilterable = IsFilterable;
+            HasSubClassValues = false;
         }
     }
 }
