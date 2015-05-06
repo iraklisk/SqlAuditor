@@ -32,7 +32,7 @@ I created SqlAuditor because we needed a solution to audit privileged accounts f
 
 ###Documentation###
 
-**Please check out our [Wiki](http://github.com/iraklisk/wiki) for installation and usage documentation.
+**Please check out our [Wiki](http://github.com/iraklisk/SqlAuditor/wiki) for installation and usage documentation.**
 
 ----------
 
