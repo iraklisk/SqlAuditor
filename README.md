@@ -1,11 +1,16 @@
-
 #SqlAuditor#
 **SqlAuditor is a simple yet powerful auditor for MS SQL Server.**
+
 I created SqlAuditor because we needed a solution to audit privileged accounts for ISO-27001 and SOLVENCY.
 
 **Please feel free to contact me for any help, issue or suggestion you have for the project.**
 
+
+
 ----------
+
+
+
 ###SqlAuditor features###
  1. Audit multiple MS SQL Server instances.
  2. Log audit events to Database.
@@ -15,16 +20,29 @@ I created SqlAuditor because we needed a solution to audit privileged accounts f
  7. Runs as a service.
  8. Easy GUI for Configuration, Testing and Reporting.
  9. Exports events per instance to Microsoft Excel (XLSX)
+
+
  
 ----------
+
+
+
 ###Project Status###
 
 SqlAuditor is finished.
+
 SqlAuditor.Console is finished.
+
 SqlAuditor.Service is finished.
+
 SqlAuditor.Win is currently under development.
 
+
+
 ----------
+
+
+
 ###Installation and Usage###
 
 Currenlty we don't provide an installer so you need to get the sources and compile them.
@@ -45,7 +63,11 @@ After you download and compile the project create a folder with SqlAuditor.dll, 
 
 The proccess will be automated when the development is completed.
 
+
+
 ----------
+
+
 
 ###Technical Details  ###
 
@@ -59,8 +81,15 @@ SqlAuditor is devided in 4 different projects.
 4. SqlAuditor.Win is the GUI used for creating the configuration files, testing configuration files, viewing and exporting the logs.
 
 The configuration consist of 2 files:
+
 1. Config.xml (Serialized config classes)
 2. Key.txt (Contains a unique machine id generated to encrypt passwords)
+
+
+
+----------
+
+
 
 ### License ###
 
