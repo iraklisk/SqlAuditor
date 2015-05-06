@@ -5,6 +5,12 @@ I created SqlAuditor because we needed a solution to audit privileged accounts f
 
 **Please feel free to contact me for any help, issues or suggestions.**
 
+----------
+
+###Downloads###
+
+[SqlAuditor Downloads](https://github.com/iraklisk/SqlAuditor/releases)
+
 
 
 ----------
@@ -20,13 +26,6 @@ I created SqlAuditor because we needed a solution to audit privileged accounts f
  7. Runs as a service.
  8. Easy GUI for Configuration, Testing and Reporting.
  9. Export audit events to Microsoft Excel and PDF.
-
-
-----------
-
-###Releases###
-
-[SqlAuditor Downloads](https://github.com/iraklisk/SqlAuditor/releases)
 
 ----------
 
