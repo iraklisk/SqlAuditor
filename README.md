@@ -1,7 +1,6 @@
 #SqlAuditor#
 **SqlAuditor is a simple yet powerful auditor for MS SQL Server.**
 
-I created SqlAuditor because we needed a solution to audit privileged accounts for ISO-27001 and SOLVENCY.
 
 **Please feel free to contact me for any help, issues or suggestions.**
 
@@ -36,6 +35,23 @@ I created SqlAuditor because we needed a solution to audit privileged accounts f
 ----------
 
 
+### Screenshots
+
+
+![Screenshot 1](https://cloud.githubusercontent.com/assets/12159215/7501020/04b16dae-f43a-11e4-8b5a-e1667cd23836.png)
+![Screenshot 2](https://cloud.githubusercontent.com/assets/12159215/7501122/a6bee676-f43a-11e4-8457-89b2ca33cf24.png)
+![Screenshot 3](https://cloud.githubusercontent.com/assets/12159215/7501124/a6cbddcc-f43a-11e4-8dce-646ef45cab00.png)
+![Screenshot 4](https://cloud.githubusercontent.com/assets/12159215/7501125/a6d25d46-f43a-11e4-9952-c8cc6af46974.png)
+![Screenshot 5](https://cloud.githubusercontent.com/assets/12159215/7501123/a6c603c0-f43a-11e4-93c0-56b6921a2258.png)
+![Screenshot 6](https://cloud.githubusercontent.com/assets/12159215/7501211/280ff2a6-f43b-11e4-913b-49007074cb9b.png)
+![Screenshot 7](https://cloud.githubusercontent.com/assets/12159215/7501212/283139f2-f43b-11e4-9516-7bc1d8183072.png)
+![Screenshot 8](https://cloud.githubusercontent.com/assets/12159215/7501213/283a344e-f43b-11e4-9c46-5106bfdff321.png)
+![Screenshot 9](https://cloud.githubusercontent.com/assets/12159215/7501214/283f4830-f43b-11e4-953e-87d4c63c96e9.png)
+![Screenshot 10](https://cloud.githubusercontent.com/assets/12159215/7501215/28446158-f43b-11e4-8367-0aa91f3ba698.png)
+
+
+
+----------
 
 ###Technical Details  ###
 
