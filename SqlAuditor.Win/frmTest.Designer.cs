@@ -31,6 +31,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTest));
             this.grdEvents = new MetroFramework.Controls.MetroGrid();
             this.colCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEvent = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -134,6 +135,7 @@
             this.Controls.Add(this.btnStartStop);
             this.Controls.Add(this.cbUseEmailProvider);
             this.Controls.Add(this.grdEvents);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmTest";
             this.Text = "Test Audit Config - ";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmTest_FormClosing);

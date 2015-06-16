@@ -32,8 +32,16 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.mtcMain = new MetroFramework.Controls.MetroTabControl();
             this.mtpHome = new MetroFramework.Controls.MetroTabPage();
+            this.mtStartStopService = new MetroFramework.Controls.MetroTile();
+            this.mtRemoveService = new MetroFramework.Controls.MetroTile();
+            this.mtInstallService = new MetroFramework.Controls.MetroTile();
+            this.metroTile2 = new MetroFramework.Controls.MetroTile();
+            this.mtDocumentation = new MetroFramework.Controls.MetroTile();
+            this.mtSettings = new MetroFramework.Controls.MetroTile();
+            this.mtAuditViewer = new MetroFramework.Controls.MetroTile();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.mtpAuditViewe = new MetroFramework.Controls.MetroTabPage();
             this.btnExport = new MetroFramework.Controls.MetroButton();
@@ -60,10 +68,7 @@
             this.metroLabel7 = new MetroFramework.Controls.MetroLabel();
             this.metroLink2 = new MetroFramework.Controls.MetroLink();
             this.metroLink1 = new MetroFramework.Controls.MetroLink();
-            this.metroTile2 = new MetroFramework.Controls.MetroTile();
-            this.mtDocumentation = new MetroFramework.Controls.MetroTile();
-            this.mtSettings = new MetroFramework.Controls.MetroTile();
-            this.mtAuditViewer = new MetroFramework.Controls.MetroTile();
+            this.metroLabel8 = new MetroFramework.Controls.MetroLabel();
             this.mtcMain.SuspendLayout();
             this.mtpHome.SuspendLayout();
             this.mtpAuditViewe.SuspendLayout();
@@ -88,6 +93,10 @@
             // 
             // mtpHome
             // 
+            this.mtpHome.Controls.Add(this.metroLabel8);
+            this.mtpHome.Controls.Add(this.mtStartStopService);
+            this.mtpHome.Controls.Add(this.mtRemoveService);
+            this.mtpHome.Controls.Add(this.mtInstallService);
             this.mtpHome.Controls.Add(this.metroTile2);
             this.mtpHome.Controls.Add(this.mtDocumentation);
             this.mtpHome.Controls.Add(this.mtSettings);
@@ -104,6 +113,101 @@
             this.mtpHome.VerticalScrollbarBarColor = true;
             this.mtpHome.VerticalScrollbarHighlightOnWheel = false;
             this.mtpHome.VerticalScrollbarSize = 10;
+            // 
+            // mtStartStopService
+            // 
+            this.mtStartStopService.ActiveControl = null;
+            this.mtStartStopService.Location = new System.Drawing.Point(518, 193);
+            this.mtStartStopService.Name = "mtStartStopService";
+            this.mtStartStopService.Size = new System.Drawing.Size(145, 79);
+            this.mtStartStopService.TabIndex = 10;
+            this.mtStartStopService.Text = "Start/Stop Service";
+            this.mtStartStopService.UseSelectable = true;
+            this.mtStartStopService.Click += new System.EventHandler(this.mtStartStopService_Click);
+            // 
+            // mtRemoveService
+            // 
+            this.mtRemoveService.ActiveControl = null;
+            this.mtRemoveService.Location = new System.Drawing.Point(518, 130);
+            this.mtRemoveService.Name = "mtRemoveService";
+            this.mtRemoveService.Size = new System.Drawing.Size(145, 57);
+            this.mtRemoveService.TabIndex = 9;
+            this.mtRemoveService.Text = "Uninstall Service";
+            this.mtRemoveService.UseSelectable = true;
+            this.mtRemoveService.Click += new System.EventHandler(this.mtRemoveService_Click);
+            // 
+            // mtInstallService
+            // 
+            this.mtInstallService.ActiveControl = null;
+            this.mtInstallService.Location = new System.Drawing.Point(518, 67);
+            this.mtInstallService.Name = "mtInstallService";
+            this.mtInstallService.Size = new System.Drawing.Size(145, 57);
+            this.mtInstallService.TabIndex = 8;
+            this.mtInstallService.Text = "Install Service";
+            this.mtInstallService.UseSelectable = true;
+            this.mtInstallService.Click += new System.EventHandler(this.mtInstallService_Click);
+            // 
+            // metroTile2
+            // 
+            this.metroTile2.ActiveControl = null;
+            this.metroTile2.Location = new System.Drawing.Point(344, 67);
+            this.metroTile2.Name = "metroTile2";
+            this.metroTile2.Size = new System.Drawing.Size(168, 120);
+            this.metroTile2.Style = MetroFramework.MetroColorStyle.Red;
+            this.metroTile2.TabIndex = 7;
+            this.metroTile2.Text = "SqlAuditor Online";
+            this.metroTile2.TileImage = global::SqlAuditor.Win.Properties.Resources.SqlAuditor;
+            this.metroTile2.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.metroTile2.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
+            this.metroTile2.UseSelectable = true;
+            this.metroTile2.UseTileImage = true;
+            this.metroTile2.Click += new System.EventHandler(this.metroTile2_Click);
+            // 
+            // mtDocumentation
+            // 
+            this.mtDocumentation.ActiveControl = null;
+            this.mtDocumentation.Location = new System.Drawing.Point(182, 67);
+            this.mtDocumentation.Name = "mtDocumentation";
+            this.mtDocumentation.Size = new System.Drawing.Size(156, 205);
+            this.mtDocumentation.Style = MetroFramework.MetroColorStyle.Yellow;
+            this.mtDocumentation.TabIndex = 6;
+            this.mtDocumentation.Text = "Documentation";
+            this.mtDocumentation.TileImage = global::SqlAuditor.Win.Properties.Resources.manual;
+            this.mtDocumentation.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.mtDocumentation.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
+            this.mtDocumentation.UseSelectable = true;
+            this.mtDocumentation.UseTileImage = true;
+            this.mtDocumentation.Click += new System.EventHandler(this.mtDocumentation_Click);
+            // 
+            // mtSettings
+            // 
+            this.mtSettings.ActiveControl = null;
+            this.mtSettings.Location = new System.Drawing.Point(20, 174);
+            this.mtSettings.Name = "mtSettings";
+            this.mtSettings.Size = new System.Drawing.Size(156, 98);
+            this.mtSettings.Style = MetroFramework.MetroColorStyle.Silver;
+            this.mtSettings.TabIndex = 5;
+            this.mtSettings.Text = "Settings";
+            this.mtSettings.TileImage = global::SqlAuditor.Win.Properties.Resources.settings;
+            this.mtSettings.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.mtSettings.UseSelectable = true;
+            this.mtSettings.UseTileImage = true;
+            this.mtSettings.Click += new System.EventHandler(this.mtSettings_Click);
+            // 
+            // mtAuditViewer
+            // 
+            this.mtAuditViewer.ActiveControl = null;
+            this.mtAuditViewer.Location = new System.Drawing.Point(20, 67);
+            this.mtAuditViewer.Name = "mtAuditViewer";
+            this.mtAuditViewer.Size = new System.Drawing.Size(156, 101);
+            this.mtAuditViewer.Style = MetroFramework.MetroColorStyle.Blue;
+            this.mtAuditViewer.TabIndex = 4;
+            this.mtAuditViewer.Text = "Audit Viewer";
+            this.mtAuditViewer.TileImage = global::SqlAuditor.Win.Properties.Resources.logviewer;
+            this.mtAuditViewer.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.mtAuditViewer.UseSelectable = true;
+            this.mtAuditViewer.UseTileImage = true;
+            this.mtAuditViewer.Click += new System.EventHandler(this.mtAuditViewer_Click);
             // 
             // metroLabel1
             // 
@@ -403,67 +507,14 @@
             this.metroLink1.UseSelectable = true;
             this.metroLink1.Click += new System.EventHandler(this.metroLink1_Click);
             // 
-            // metroTile2
+            // metroLabel8
             // 
-            this.metroTile2.ActiveControl = null;
-            this.metroTile2.Location = new System.Drawing.Point(344, 67);
-            this.metroTile2.Name = "metroTile2";
-            this.metroTile2.Size = new System.Drawing.Size(156, 205);
-            this.metroTile2.Style = MetroFramework.MetroColorStyle.Silver;
-            this.metroTile2.TabIndex = 7;
-            this.metroTile2.Text = "Source Code";
-            this.metroTile2.TileImage = global::SqlAuditor.Win.Properties.Resources.Octocat1;
-            this.metroTile2.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.metroTile2.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
-            this.metroTile2.UseSelectable = true;
-            this.metroTile2.UseTileImage = true;
-            this.metroTile2.Click += new System.EventHandler(this.metroTile2_Click);
-            // 
-            // mtDocumentation
-            // 
-            this.mtDocumentation.ActiveControl = null;
-            this.mtDocumentation.Location = new System.Drawing.Point(182, 67);
-            this.mtDocumentation.Name = "mtDocumentation";
-            this.mtDocumentation.Size = new System.Drawing.Size(156, 205);
-            this.mtDocumentation.Style = MetroFramework.MetroColorStyle.Yellow;
-            this.mtDocumentation.TabIndex = 6;
-            this.mtDocumentation.Text = "Documentation";
-            this.mtDocumentation.TileImage = global::SqlAuditor.Win.Properties.Resources.manual;
-            this.mtDocumentation.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.mtDocumentation.TileTextFontSize = MetroFramework.MetroTileTextSize.Tall;
-            this.mtDocumentation.UseSelectable = true;
-            this.mtDocumentation.UseTileImage = true;
-            this.mtDocumentation.Click += new System.EventHandler(this.mtDocumentation_Click);
-            // 
-            // mtSettings
-            // 
-            this.mtSettings.ActiveControl = null;
-            this.mtSettings.Location = new System.Drawing.Point(20, 174);
-            this.mtSettings.Name = "mtSettings";
-            this.mtSettings.Size = new System.Drawing.Size(156, 98);
-            this.mtSettings.Style = MetroFramework.MetroColorStyle.Red;
-            this.mtSettings.TabIndex = 5;
-            this.mtSettings.Text = "Settings";
-            this.mtSettings.TileImage = global::SqlAuditor.Win.Properties.Resources.settings;
-            this.mtSettings.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.mtSettings.UseSelectable = true;
-            this.mtSettings.UseTileImage = true;
-            this.mtSettings.Click += new System.EventHandler(this.mtSettings_Click);
-            // 
-            // mtAuditViewer
-            // 
-            this.mtAuditViewer.ActiveControl = null;
-            this.mtAuditViewer.Location = new System.Drawing.Point(20, 67);
-            this.mtAuditViewer.Name = "mtAuditViewer";
-            this.mtAuditViewer.Size = new System.Drawing.Size(156, 101);
-            this.mtAuditViewer.Style = MetroFramework.MetroColorStyle.Blue;
-            this.mtAuditViewer.TabIndex = 4;
-            this.mtAuditViewer.Text = "Audit Viewer";
-            this.mtAuditViewer.TileImage = global::SqlAuditor.Win.Properties.Resources.logviewer;
-            this.mtAuditViewer.TileImageAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.mtAuditViewer.UseSelectable = true;
-            this.mtAuditViewer.UseTileImage = true;
-            this.mtAuditViewer.Click += new System.EventHandler(this.mtAuditViewer_Click);
+            this.metroLabel8.AutoSize = true;
+            this.metroLabel8.Location = new System.Drawing.Point(518, 18);
+            this.metroLabel8.Name = "metroLabel8";
+            this.metroLabel8.Size = new System.Drawing.Size(131, 19);
+            this.metroLabel8.TabIndex = 11;
+            this.metroLabel8.Text = "Run as Administrator";
             // 
             // frmMain
             // 
@@ -475,6 +526,7 @@
             this.Controls.Add(this.metroLabel7);
             this.Controls.Add(this.metroLink1);
             this.Controls.Add(this.mtcMain);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmMain";
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.SystemShadow;
             this.Style = MetroFramework.MetroColorStyle.Default;
@@ -529,6 +581,10 @@
         private MetroFramework.Controls.MetroTile metroTile2;
         private MetroFramework.Controls.MetroLink metroLink2;
         private MetroFramework.Controls.MetroLabel metroLabel7;
+        private MetroFramework.Controls.MetroTile mtStartStopService;
+        private MetroFramework.Controls.MetroTile mtRemoveService;
+        private MetroFramework.Controls.MetroTile mtInstallService;
+        private MetroFramework.Controls.MetroLabel metroLabel8;
     }
 }
 

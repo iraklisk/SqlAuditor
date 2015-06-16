@@ -41,6 +41,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSettings));
             this.mtcSettings = new MetroFramework.Controls.MetroTabControl();
             this.mtpInstanceConfig = new MetroFramework.Controls.MetroTabPage();
             this.cbIntegratedSecurity = new MetroFramework.Controls.MetroCheckBox();
@@ -814,11 +815,11 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.mtcSettings);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmSettings";
             this.Resizable = false;
-            this.ShowIcon = false;
             this.Load += new System.EventHandler(this.frmSettings_Load);
             this.mtcSettings.ResumeLayout(false);
             this.mtpInstanceConfig.ResumeLayout(false);
