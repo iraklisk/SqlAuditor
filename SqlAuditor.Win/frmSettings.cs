@@ -202,8 +202,8 @@ namespace SqlAuditor.Win
                     {
                         Trace.Filters.Add(new EventFilter(
                             context.SqlTraceColumns.Where((c) => c.Value.Name == row.Cells["colFilterCol"].Value.ToString()).First().Key,
+                             (int)colLogicalOperator.GetIndex(row.Cells["colLogicalOperator"].Value.ToString()),
                             (int)colComparisonOperator.GetIndex(row.Cells["colComparisonOperator"].Value.ToString()),
-                            (int)colLogicalOperator.GetIndex(row.Cells["colLogicalOperator"].Value.ToString()),
                             row.Cells["colValue"].Value
                             ));
                     }
