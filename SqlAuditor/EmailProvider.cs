@@ -21,9 +21,6 @@ namespace SqlAuditor
             this.emailConfig = context.Trace.EmailConfig;
             if (emailConfig.Enabled)
             {
-                smtp = new SmtpClient(emailConfig.Server, emailConfig.Port);
-                smtp.EnableSsl = emailConfig.UseSSL;
-                smtp.Credentials = new NetworkCredential(emailConfig.Username, emailConfig.Password);
                 from = new MailAddress(emailConfig.EmailAddress);
             }
         }
@@ -56,7 +53,12 @@ namespace SqlAuditor
                     sb.AppendLine("Powered by SqlAuditor");
                     sb.AppendLine("http://github.com/iraklisk/SqlAuditor");
                     msg.Body = sb.ToString();
-                    smtp.Send(msg);
+                    using (smtp = new SmtpClient(emailConfig.Server, emailConfig.Port))
+                    {
+                        smtp.EnableSsl = emailConfig.UseSSL;
+                        smtp.Credentials = new NetworkCredential(emailConfig.Username, emailConfig.Password);
+                        smtp.Send(msg);
+                    }
                 }
                 catch (Exception ex)
                 {
